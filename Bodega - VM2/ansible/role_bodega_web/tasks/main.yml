@@ -50,3 +50,4 @@
   cron:
     name: "Simuler Martin"
     job: "@reboot /usr/local/bin/martin_simulator.sh"
+    

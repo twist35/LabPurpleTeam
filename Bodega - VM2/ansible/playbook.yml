@@ -4,5 +4,5 @@
   become: true
 
   roles:
-    - web
-    - users
+    - role_bodega_web
+    - role_bodega_users

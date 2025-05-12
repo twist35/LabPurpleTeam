@@ -1,6 +1,6 @@
 ---
 - name: Restart Apache
-  become: true
-  service:
+  systemd:
     name: apache2
     state: restarted
+    enabled: yes
