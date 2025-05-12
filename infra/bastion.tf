@@ -1,24 +1,20 @@
-resource "aws_instance" "vm_lenox" {
+resource "aws_instance" "vm_bastion" {
   ami                         = var.ami
   instance_type               = var.instance_type
   key_name                    = aws_key_pair.vm_key.key_name
-  vpc_security_group_ids      = [module.vm_sg.security_group_id]
+  vpc_security_group_ids      = [module.bastion_sg.security_group_id]
   subnet_id                   = aws_subnet.public.id
-  private_ip                  = "10.0.2.10" # IP privée statique
+  private_ip                  = "10.0.2.30" # IP privée statique
   associate_public_ip_address = true
+
 
   credit_specification {
     cpu_credits = "standard"
   }
 
   tags = {
-    Name = "Lenox-VM"
+    Name = "Bastion-VM"
   }
-}
-
-resource "aws_key_pair" "vm_key" {
-  key_name   = "vm_key"
-  public_key = file("mykey.pub")
 }
 
 
