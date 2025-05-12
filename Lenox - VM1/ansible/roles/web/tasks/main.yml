@@ -8,7 +8,7 @@
     update_cache: yes
 
 - name: Activer Apache mod_php
-  command: a2enmod php7.4
+  command: a2enmod php8.2
   ignore_errors: yes
 
 - name: Copier la configuration Apache
