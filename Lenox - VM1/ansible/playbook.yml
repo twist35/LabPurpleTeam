@@ -1,0 +1,6 @@
+- name: Déploiement complet
+  hosts: web
+  become: yes
+  roles:
+    - users
+    - web
