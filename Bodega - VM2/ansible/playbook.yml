@@ -1,0 +1,8 @@
+---
+- name: Déploiement de la machine Bodega
+  hosts: bodega
+  become: true
+
+  roles:
+    - web
+    - users
