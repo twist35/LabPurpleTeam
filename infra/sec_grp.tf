@@ -11,7 +11,7 @@ module "deb-vm_sg" {
     protocol    = "tcp"
     cidr_blocks = "0.0.0.0/0"
     description = "Allow SSH from anywhere"
-  },
+    },
     {
       from_port   = 80
       to_port     = 80
@@ -30,7 +30,7 @@ module "deb-vm_sg" {
   }]
 
   tags = {
-    Name = "VM-SG"
+    Name        = "VM-SG"
     Environment = "Development"
   }
 }

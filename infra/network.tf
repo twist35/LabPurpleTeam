@@ -71,7 +71,7 @@ resource "aws_route_table" "private" {
 resource "aws_eip" "nat_eip" {
   domain = "vpc"
   tags = {
-    Name   = "elastic ip for nat"
+    Name = "elastic ip for nat"
   }
 }
 
@@ -85,6 +85,6 @@ resource "aws_nat_gateway" "ntg" {
   subnet_id     = aws_subnet.public.id
 
   tags = {
-    Name   = "NAT gw"
+    Name = "NAT gw"
   }
 }
