@@ -35,8 +35,6 @@ module "lenox_sg" {
   }
 }
 
-
-
 module "bodega_sg" {
   source = "terraform-aws-modules/security-group/aws"
 
