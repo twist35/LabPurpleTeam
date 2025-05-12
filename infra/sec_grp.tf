@@ -1,7 +1,7 @@
-module "lenox_sg" {
+module "deb-vm_sg" {
   source = "terraform-aws-modules/security-group/aws"
 
-  name        = "lenox-sg"
+  name        = "VM-sg"
   description = "Security group for SSH access"
   vpc_id      = var.vpc_id
 
@@ -30,45 +30,7 @@ module "lenox_sg" {
   }]
 
   tags = {
-    Name = "SSH-SG"
+    Name = "VM-SG"
     Environment = "Development"
   }
 }
-
-module "bodega_sg" {
-  source = "terraform-aws-modules/security-group/aws"
-
-  name        = "bodega-sg"
-  description = "Security group for SSH access"
-  vpc_id      = var.vpc_id
-
-  ingress_with_cidr_blocks = [{
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = "0.0.0.0/0"
-    description = "Allow SSH from anywhere"
-  },
-    {
-      from_port   = 80
-      to_port     = 80
-      protocol    = "tcp"
-      cidr_blocks = "0.0.0.0/0"
-      description = "Allow HTTP traffic from anywhere"
-    },
-  ]
-
-  egress_with_cidr_blocks = [{
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = "0.0.0.0/0"
-    description = "Allow all outbound traffic"
-  }]
-
-  tags = {
-    Name = "SSH-SG"
-    Environment = "Development"
-  }
-}
-
