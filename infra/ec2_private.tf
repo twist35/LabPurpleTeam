@@ -24,7 +24,7 @@ resource "aws_security_group" "private_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "TCP"
-    security_groups =  [module.bastion_sg.security_group_id]
+    security_groups =  [aws_security_group.nat_sg.id]
     
   }
 
