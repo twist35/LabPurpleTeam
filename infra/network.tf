@@ -71,10 +71,10 @@ resource "aws_route_table" "private" {
 resource "aws_route" "private_nat_instance" {
   route_table_id         = aws_route_table.private.id
   destination_cidr_block = "0.0.0.0/0"
-  network_interface_id = aws_instance.nat.primary_network_interface_id
+  network_interface_id = aws_network_interface.nat_eni.id
   lifecycle {
     create_before_destroy = true
-    ignore_changes        = [ network_interface_id]
+    ignore_changes        = [network_interface_id]
   }
 }
 

@@ -1,3 +1,6 @@
+# ------------------------------
+# Sécurité pour l'instance NAT
+# ------------------------------
 resource "aws_security_group" "nat_sg" {
   name        = "nat-instance-sg"
   description = "Allow NAT traffic"
@@ -7,7 +10,7 @@ resource "aws_security_group" "nat_sg" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = [data.aws_subnet.private.cidr_block]
+    cidr_blocks = [aws_subnet.private.cidr_block]
   }
 
   egress {
@@ -22,14 +25,44 @@ resource "aws_security_group" "nat_sg" {
   }
 }
 
+# ------------------------------
+# ENI pour l'instance NAT
+# ------------------------------
+resource "aws_network_interface" "nat_eni" {
+  subnet_id       = aws_subnet.public.id
+  security_groups = [aws_security_group.nat_sg.id]
+  source_dest_check = false
+  private_ips = ["10.0.2.100"]
+
+  tags = {
+    Name = "nat-eni"
+  }
+}
+
+# ------------------------------
+# EIP pour l'instance NAT
+# ------------------------------
+resource "aws_eip" "nat_eip" {
+  domain = "vpc" 
+}
+
+resource "aws_eip_association" "nat_assoc" {
+  allocation_id        = aws_eip.nat_eip.id
+  network_interface_id = aws_network_interface.nat_eni.id
+}
+
+# ------------------------------
+# Instance NAT
+# ------------------------------
 resource "aws_instance" "nat" {
-  ami                         = "ami-015c7728d5cb3dccd"
-  instance_type               = "t2.micro"
-  subnet_id                   = aws_subnet.public.id
-  associate_public_ip_address = true
-  source_dest_check           = false
-  key_name                    = aws_key_pair.vm_key.key_name
-  security_groups             = [aws_security_group.nat_sg.id]
+  ami               = "ami-015c7728d5cb3dccd"  # Utilise la variable pour l'AMI
+  instance_type     = "t3.nano"  # Utilise la variable pour l'instance_type
+  key_name          = aws_key_pair.vm_key.key_name  # Utilise la variable pour la clé SSH
+
+  network_interface {
+    device_index         = 0
+    network_interface_id = aws_network_interface.nat_eni.id
+  }
 
   tags = {
     Name = "NAT-Instance"
