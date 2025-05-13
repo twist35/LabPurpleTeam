@@ -17,7 +17,7 @@ resource "aws_instance" "wazuh_manager" {
 resource "aws_security_group" "wazuh_sg" {
   vpc_id = var.vpc_id
 
-   ingress {
+  ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "TCP"
@@ -25,10 +25,31 @@ resource "aws_security_group" "wazuh_sg" {
   }
 
   ingress {
+    from_port   = 1515
+    to_port     = 1515
+    protocol    = "TCP"
+    cidr_blocks = [aws_subnet.public.cidr_block]
+  }
+
+  ingress {
+    from_port   = 1514
+    to_port     = 1514
+    protocol    = "UDP"
+    cidr_blocks = [aws_subnet.public.cidr_block]
+  }
+
+  ingress {
+    from_port   = 5601
+    to_port     = 5601
+    protocol    = "TCP"
+    cidr_blocks = [aws_subnet.public.cidr_block]
+  }
+
+  ingress {
     from_port   = 55000
     to_port     = 55000
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [aws_subnet.public.cidr_block]
   }
 
   ingress {

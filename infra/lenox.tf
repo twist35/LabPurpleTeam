@@ -1,6 +1,6 @@
 resource "aws_instance" "vm_lenox" {
   ami                         = var.ami
-  instance_type               = var.instance_type
+  instance_type               = "t3a.micro"
   key_name                    = aws_key_pair.vm_key.key_name
   vpc_security_group_ids      = [module.vm_sg.security_group_id]
   subnet_id                   = aws_subnet.public.id
