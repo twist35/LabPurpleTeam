@@ -20,7 +20,6 @@ module "vm_sg" {
       description = "Allow HTTP traffic from anywhere"
     },
   ]
-
   egress_with_cidr_blocks = [{
     from_port   = 0
     to_port     = 0
