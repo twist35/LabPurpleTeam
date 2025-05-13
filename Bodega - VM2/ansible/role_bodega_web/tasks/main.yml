@@ -1,9 +1,14 @@
----
 - name: Installer Apache
   apt:
     name: apache2
     update_cache: yes
     state: present
+
+- name: Créer dossier vide pour catch-all
+  file:
+    path: /var/www/empty
+    state: directory
+    mode: '0755'
 
 - name: Copier les fichiers du site principal
   copy:
@@ -21,13 +26,34 @@
     group: www-data
     mode: '0755'
 
+- name: Copier la configuration Apache du site principal
+  copy:
+    src: 1-bodega.conf
+    dest: /etc/apache2/sites-available/1-bodega.conf
+  notify: Restart Apache
+
 - name: Copier la configuration Apache du sous-domaine
   copy:
-    src: blogetu.conf
-    dest: /etc/apache2/sites-available/blogetu.conf
+    src: 2-blogetu.conf
+    dest: /etc/apache2/sites-available/2-blogetu.conf
+  notify: Restart Apache
 
-- name: Activer le VirtualHost blogetu
-  command: a2ensite blogetu.conf
+- name: Désactiver le VirtualHost par défaut
+  command: a2dissite 000-default.conf
+  args:
+    removes: "/etc/apache2/sites-enabled/000-default.conf"
+  notify: Restart Apache
+
+- name: Activer le VirtualHost principal (1-bodega.conf)
+  command: a2ensite 1-bodega.conf
+  args:
+    creates: "/etc/apache2/sites-enabled/1-bodega.conf"
+  notify: Restart Apache
+
+- name: Activer le VirtualHost blogetu (2-blogetu.conf)
+  command: a2ensite 2-blogetu.conf
+  args:
+    creates: "/etc/apache2/sites-enabled/2-blogetu.conf"
   notify: Restart Apache
 
 - name: Activer les modules Apache nécessaires
@@ -39,15 +65,3 @@
     name: apache2
     state: started
     enabled: true
-
-- name: Lancer le simulateur de Martin
-  copy:
-    src: site/martin_simulator.sh
-    dest: /usr/local/bin/martin_simulator.sh
-    mode: '0755'
-
-- name: Démarrer martin_simulator au boot (crontab)
-  cron:
-    name: "Simuler Martin"
-    job: "@reboot /usr/local/bin/martin_simulator.sh"
-    
