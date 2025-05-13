@@ -1,0 +1,12 @@
+---
+# - name: Wazuh deploy
+#   hosts: wazuh
+#   become: yes
+#   roles:
+#     - wazuh_configuration
+
+- name: Deploy Wazuh agent
+  hosts: wazuh_agent
+  become: yes
+  roles:
+    - wazuh_agents

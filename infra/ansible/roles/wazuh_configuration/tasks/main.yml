@@ -1,0 +1,30 @@
+---
+# tasks file for wazuh_configuration
+- hosts: wazuh
+  become: yes
+  tasks:
+    - name: Update system
+      yum: name=* state=latest
+    - name: Start Wazuh service
+      systemd:
+        name: wazuh-manager
+        state: started
+        enabled: yes
+    - name: Open firewall for Wazuh dashboard
+      firewalld:
+        port: 443/tcp
+        permanent: yes
+        state: enabled
+        immediate: yes
+    - name: Open firewall for Wazuh API
+      firewalld:
+        port: 55000/tcp
+        permanent: yes
+        state: enabled
+        immediate: yes
+    - name: Open firewall for Wazuh agent
+      firewalld:
+        port: 1514/tcp
+        permanent: yes
+        state: enabled
+        immediate: yes
