@@ -40,7 +40,7 @@ sudo ssh -L 1234:10.0.1.50:443 -i mykey -o "ProxyCommand=ssh -i mykey -W %h:%p e
 Ensuite, ouvrez votre navigateur sur :
 
 ```
-https://localhost:443
+https://localhost:1234
 ```
 
 ---
