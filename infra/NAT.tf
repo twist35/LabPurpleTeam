@@ -24,7 +24,7 @@ resource "aws_security_group" "nat_sg" {
 
 resource "aws_instance" "nat" {
   ami                         = "ami-015c7728d5cb3dccd"
-  instance_type               = "t3.micro"
+  instance_type               = "t2.micro"
   subnet_id                   = aws_subnet.public.id
   associate_public_ip_address = true
   source_dest_check           = false

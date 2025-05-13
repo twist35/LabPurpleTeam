@@ -72,15 +72,19 @@ resource "aws_route" "private_nat_instance" {
   route_table_id         = aws_route_table.private.id
   destination_cidr_block = "0.0.0.0/0"
   network_interface_id = aws_instance.nat.primary_network_interface_id
-}
-
-
-resource "aws_eip" "nat_eip" {
-  domain = "vpc"
-  tags = {
-    Name = "elastic ip for nat"
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes        = [instance_id]
   }
 }
+
+
+#resource "aws_eip" "nat_eip" {
+#  domain = "vpc"
+#  tags = {
+#    Name = "elastic ip for nat"
+#  }
+#}
 
 resource "aws_route_table_association" "public_subnet_assoc" {
   subnet_id      = aws_subnet.public.id
@@ -91,11 +95,11 @@ resource "aws_route_table_association" "private_subnet_assoc" {
   route_table_id = aws_route_table.private.id
 }
 
-resource "aws_nat_gateway" "ntg" {
-  allocation_id = aws_eip.nat_eip.id
-  subnet_id     = aws_subnet.public.id
-
-  tags = {
-    Name = "NAT gw"
-  }
-}
+#resource "aws_nat_gateway" "ntg" {
+#  allocation_id = aws_eip.nat_eip.id
+#  subnet_id     = aws_subnet.public.id
+#
+#  tags = {
+#    Name = "NAT gw"
+#  }
+#}
