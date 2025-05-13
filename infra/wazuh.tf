@@ -4,9 +4,8 @@ resource "aws_instance" "wazuh_manager" {
   ami                         = var.wazuh_ami
   instance_type               = var.wazuh_instance_type
   key_name                    = aws_key_pair.vm_key.key_name
-  subnet_id                   = aws_subnet.public.id
-  private_ip                  = "10.0.2.50" # IP privée statique #TODO
-  associate_public_ip_address = true
+  subnet_id                   = aws_subnet.private.id
+  private_ip                  = "10.0.1.50" # IP privée statique 
 
   vpc_security_group_ids      = [aws_security_group.wazuh_sg.id]
 
@@ -18,11 +17,11 @@ resource "aws_instance" "wazuh_manager" {
 resource "aws_security_group" "wazuh_sg" {
   vpc_id = var.vpc_id
 
-  ingress {
+   ingress {
     from_port   = 22
     to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    protocol    = "TCP"
+    security_groups =  [aws_security_group.nat_sg.id]
   }
 
   ingress {

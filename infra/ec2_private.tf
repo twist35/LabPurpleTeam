@@ -1,4 +1,5 @@
 resource "aws_instance" "vm_test_private" {
+  count = 0
   ami                         = var.ami
   instance_type               = "t3.nano"
   key_name                    = aws_key_pair.vm_key.key_name
@@ -25,7 +26,6 @@ resource "aws_security_group" "private_sg" {
     to_port     = 22
     protocol    = "TCP"
     security_groups =  [aws_security_group.nat_sg.id]
-    
   }
 
   egress {
