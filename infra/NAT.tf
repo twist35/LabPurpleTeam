@@ -7,7 +7,7 @@ resource "aws_security_group" "nat_sg" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = [data.aws_subnet.public.cidr_block]
+    cidr_blocks = [data.aws_subnet.private.cidr_block]
   }
 
   egress {

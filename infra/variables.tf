@@ -1,6 +1,6 @@
 variable "ami" {
   type    = string
-  default = "ami-0644165ab979df02d" #deb 12 #tODO
+  default = "ami-0644165ab979df02d" #deb 12 
 }
 
 variable "instance_type" {

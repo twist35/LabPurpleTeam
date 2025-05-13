@@ -74,7 +74,7 @@ resource "aws_route" "private_nat_instance" {
   network_interface_id = aws_instance.nat.primary_network_interface_id
   lifecycle {
     create_before_destroy = true
-    ignore_changes        = [instance_id]
+    ignore_changes        = [ network_interface_id]
   }
 }
 
