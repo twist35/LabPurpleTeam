@@ -43,7 +43,14 @@ Ensuite, ouvrez votre navigateur sur :
 https://localhost:1234
 ```
 
+### Identifiants
+
+Username : admin
+Password : <Instance Id> (avec le I en majuscule) Exemple : I-00ba406a1c625db3c
+
 ---
+
+
 
 ## 🎉 Enjoy!
 
