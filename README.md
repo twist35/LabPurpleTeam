@@ -1,6 +1,52 @@
-# LabPurpleTeam
+# 🚀 LabPurpleTeam - Sécurité de Ouf !
 
-## Wazuh
+Bienvenue dans **LabPurpleTeam**, votre laboratoire de sécurité ultra-connecté et blindé grâce à **Wazuh** ! Ici, on fait de la surveillance de sécurité comme des pros. 💪
 
-SSH connect : 
-ssh -o "IdentitiesOnly=yes"     -o "ProxyCommand=ssh -i mykey -W %h:%p ec2-user@51.44.226.200"     -i mykey wazuh-user@10.0.1.50
+---
+
+## 🛠️ Déploiement de l'architecture Wazuh
+
+1. **Lancer Terraform** pour créer l'architecture de dingue Wazuh :
+
+   ```bash
+   terraform apply
+   ```
+2. **Déployer les agents** sur vos machines cibles avec Ansible :
+
+   ```bash
+   ansible-playbook -i hosts.ini playbook.yml
+   ```
+
+---
+
+## 🔑 Connexion SSH de Fou
+
+Pour vous connecter en SSH à la machine Wazuh, utilisez cette commande qui déchire :
+
+```bash
+ssh -o "IdentitiesOnly=yes" -o "ProxyCommand=ssh -i mykey -W %h:%p ec2-user@51.44.226.200" -i mykey wazuh-user@10.0.1.50
+```
+
+---
+
+## 🌐 Accès au Dashboard Wazuh
+
+Pour accéder à l’interface de gestion super stylée de Wazuh, utilisez ce tunnel SSH ultra sécurisé :
+
+```bash
+sudo ssh -L 1234:10.0.1.50:443 -i mykey -o "ProxyCommand=ssh -i mykey -W %h:%p ec2-user@51.44.226.200" wazuh-user@10.0.1.50
+```
+
+Ensuite, ouvrez votre navigateur sur :
+
+```
+https://localhost:443
+```
+
+---
+
+## 🎉 Enjoy!
+
+Et voilà ! Vous êtes prêt à dompter la cybersécurité avec Wazuh ! Si vous avez des questions, n'hésitez pas à nous contacter. Let's make security epic! 🔥
+
+*Martin t'es grave beau*
