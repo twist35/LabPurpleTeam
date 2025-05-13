@@ -19,6 +19,13 @@ module "vm_sg" {
       cidr_blocks = "0.0.0.0/0"
       description = "Allow HTTP traffic from anywhere"
     },
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      cidr_blocks = "0.0.0.0/0"
+      description = "Allow HTTP traffic from anywhere"
+    },
   ]
   egress_with_cidr_blocks = [{
     from_port   = 0
