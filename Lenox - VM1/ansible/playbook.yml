@@ -1,6 +1,10 @@
-- name: Déploiement complet
+- name: Complete deploy
   hosts: lenox
   become: yes
+
   roles:
-    - users
-    - web
+    - openssl
+    - lenox_users
+    - lenox_web
+    - cockpit_users
+    - cockpit_web

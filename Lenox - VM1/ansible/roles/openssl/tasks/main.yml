@@ -1,0 +1,25 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for roles/openssl
+
+- name: Install required packages (openssl)
+  apt:
+    name:
+      - openssl
+    state: present
+    update_cache: yes
+
+- name: Ensure the private key directory exists
+  file:
+    path: /etc/ssl/private
+    state: directory
+    mode: '0700'
+
+- name: Generate a self-signed SSL certificate
+  command: >
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048
+    -keyout /etc/ssl/private/selfsigned.key
+    -out /etc/ssl/certs/selfsigned.crt
+    -subj "/CN={{ ansible_hostname }}"
+  args:
+    creates: /etc/ssl/certs/selfsigned.crt
