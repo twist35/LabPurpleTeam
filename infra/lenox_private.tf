@@ -1,10 +1,10 @@
-resource "aws_instance" "vm_lenox" {
+resource "aws_instance" "vm_lenox_private" {
   ami                         = var.ami
   instance_type               = "t3a.micro"
   key_name                    = aws_key_pair.vm_key.key_name
   vpc_security_group_ids      = [module.vm_sg.security_group_id]
-  subnet_id                   = aws_subnet.public.id
-  private_ip                  = "10.0.2.10" # IP privée statique
+  subnet_id                   = aws_subnet.private.id
+  private_ip                  = "10.0.1.10" # IP privée statique
   associate_public_ip_address = true
 
   credit_specification {
@@ -12,6 +12,10 @@ resource "aws_instance" "vm_lenox" {
   }
 
   tags = {
-    Name = "Lenox-VM"
+    Name = "Lenox-Private-VM"
   }
 }
+
+
+
+
