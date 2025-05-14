@@ -34,7 +34,7 @@ resource "aws_security_group" "wazuh_sg" {
   ingress {
     from_port   = 1514
     to_port     = 1514
-    protocol    = "UDP"
+    protocol    = "TCP"
     cidr_blocks = [aws_subnet.public.cidr_block]
   }
 
