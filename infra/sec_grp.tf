@@ -94,7 +94,7 @@ module "lenox_private_sg" {
   source = "terraform-aws-modules/security-group/aws"
 
   name        = "lenox_private_sg"
-  description = "Security group for HTTPS access on VMs"
+  description = "Security group for private lenox"
   vpc_id      = var.vpc_id
 
   ingress_with_cidr_blocks = [
@@ -102,8 +102,22 @@ module "lenox_private_sg" {
       from_port   = 443
       to_port     = 443
       protocol    = "tcp"
-      cidr_blocks = "0.0.0.0/0"
-      description = "Allow HTTP traffic from anywhere"
+      cidr_blocks = aws_subnet.public.cidr_block
+      description = "Allow HTTPS traffic from bastion"
+    },
+    {
+      from_port   = 80
+      to_port     = 80
+      protocol    = "tcp"
+      cidr_blocks = aws_subnet.public.cidr_block
+      description = "Allow HTTP traffic from bastion"
+    },
+    {
+      from_port   = 22
+      to_port     = 22
+      protocol    = "tcp"
+      cidr_blocks = aws_subnet.public.cidr_block
+      description = "Allow SSH traffic from bastion"
     },
   ]
   egress_with_cidr_blocks = [{

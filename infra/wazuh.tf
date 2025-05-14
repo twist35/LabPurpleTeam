@@ -56,7 +56,7 @@ resource "aws_security_group" "wazuh_sg" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [aws_subnet.public.cidr_block]
   }
 
   egress {
