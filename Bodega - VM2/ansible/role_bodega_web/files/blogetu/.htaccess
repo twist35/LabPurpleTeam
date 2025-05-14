@@ -1,0 +1,4 @@
+# Empêcher l'accès direct aux fichiers PHP
+<Files *.php>
+    Require all denied
+</Files>

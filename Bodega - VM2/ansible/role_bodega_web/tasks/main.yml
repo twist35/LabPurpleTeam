@@ -1,16 +1,60 @@
-- name: Installer Apache
+---
+- name: Installer Apache, PHP et MariaDB
   apt:
-    name: apache2
-    update_cache: yes
+    name:
+      - apache2
+      - php
+      - php-mysql
+      - mariadb-server
     state: present
+    update_cache: yes
 
-- name: Créer dossier vide pour catch-all
+- name: Installer dépendances Python pour MySQL
+  apt:
+    name: python3-pymysql
+    state: present
+    update_cache: yes
+
+- name: Démarrer MariaDB
+  service:
+    name: mariadb
+    state: started
+    enabled: true
+
+- name: Créer l'utilisateur MySQL ansible_admin avec tous les privilèges
+  community.mysql.mysql_user:
+    name: "{{ mysql_ansible_user }}"
+    password: "{{ mysql_ansible_password }}"
+    host: localhost
+    priv: '*.*:ALL,GRANT'
+    state: present
+    login_user: root
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Créer la base de données blogetu
+  community.mysql.mysql_db:
+    name: blogetu
+    state: present
+    login_user: "{{ mysql_ansible_user }}"
+    login_password: "{{ mysql_ansible_password }}"
+
+- name: Créer l'utilisateur blogetu_user et lui accorder des privilèges
+  community.mysql.mysql_user:
+    name: "{{ mysql_blogetu_user }}"
+    password: "{{ mysql_blogetu_password }}"
+    priv: 'blogetu.*:ALL'
+    host: localhost
+    state: present
+    login_user: "{{ mysql_ansible_user }}"
+    login_password: "{{ mysql_ansible_password }}"
+
+- name: Créer un dossier pour le site catch-all
   file:
     path: /var/www/empty
     state: directory
     mode: '0755'
 
-- name: Copier les fichiers du site principal
+- name: Copier les fichiers du site principal (domaine principal)
   copy:
     src: site/
     dest: /var/www/html/
@@ -26,13 +70,13 @@
     group: www-data
     mode: '0755'
 
-- name: Copier la configuration Apache du site principal
+- name: Copier la configuration Apache du site principal (domaine principal)
   copy:
     src: 1-bodega.conf
     dest: /etc/apache2/sites-available/1-bodega.conf
   notify: Restart Apache
 
-- name: Copier la configuration Apache du sous-domaine
+- name: Copier la configuration Apache du sous-domaine blogetu
   copy:
     src: 2-blogetu.conf
     dest: /etc/apache2/sites-available/2-blogetu.conf
@@ -44,13 +88,13 @@
     removes: "/etc/apache2/sites-enabled/000-default.conf"
   notify: Restart Apache
 
-- name: Activer le VirtualHost principal (1-bodega.conf)
+- name: Activer le VirtualHost principal (domaine principal)
   command: a2ensite 1-bodega.conf
   args:
     creates: "/etc/apache2/sites-enabled/1-bodega.conf"
   notify: Restart Apache
 
-- name: Activer le VirtualHost blogetu (2-blogetu.conf)
+- name: Activer le VirtualHost blogetu (sous-domaine)
   command: a2ensite 2-blogetu.conf
   args:
     creates: "/etc/apache2/sites-enabled/2-blogetu.conf"
@@ -60,8 +104,30 @@
   command: a2enmod rewrite
   notify: Restart Apache
 
-- name: Démarrer Apache
+- name: Déployer les fichiers PHP et HTML du sous-domaine blogetu
+  copy:
+    src: "{{ item }}"
+    dest: "/var/www/blogetu/{{ item | basename }}"
+    owner: www-data
+    group: www-data
+    mode: '0644'
+  with_items:
+    - blogetu/login.php
+    - blogetu/blog.php
+    - blogetu/post_message.php
+    - blogetu/db.php
+    - blogetu/logout.php
+
+- name: Ajouter un fichier .htaccess pour blogetu (sécuriser le dossier PHP)
+  copy:
+    src: blogetu/.htaccess
+    dest: /var/www/blogetu/.htaccess
+    owner: www-data
+    group: www-data
+    mode: '0644'
+
+- name: Redémarrer Apache
   service:
     name: apache2
-    state: started
+    state: restarted
     enabled: true
