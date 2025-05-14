@@ -40,15 +40,6 @@ module "bodega_sg" {
   description = "Security group for SSH+HTTP access on VMs"
   vpc_id      = var.vpc_id
 
-  ingress_with_cidr_blocks = [
-    {
-      from_port   = 3306
-      to_port     = 3306
-      protocol    = "tcp"
-      cidr_blocks = "0.0.0.0/0"
-      description = "Allow HTTP traffic from anywhere"
-    },
-  ]
   egress_with_cidr_blocks = [{
     from_port   = 0
     to_port     = 0
