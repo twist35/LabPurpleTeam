@@ -14,7 +14,7 @@ Bienvenue dans **LabPurpleTeam**, votre laboratoire de sécurité ultra-connect�
 2. **Déployer les agents** sur vos machines cibles avec Ansible :
 
    ```bash
-   ansible-playbook -i hosts.ini playbook.yml
+   ansible-playbook -i hosts.ini playbook.yml -vvv --ssh-extra-args="-o StrictHostKeyChecking=no"
    ```
 
 ---
