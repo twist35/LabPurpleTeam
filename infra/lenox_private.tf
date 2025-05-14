@@ -5,8 +5,6 @@ resource "aws_instance" "vm_lenox_private" {
   vpc_security_group_ids      = [module.vm_sg.security_group_id]
   subnet_id                   = aws_subnet.private.id
   private_ip                  = "10.0.1.10" # IP privée statique
-  associate_public_ip_address = true
-
   credit_specification {
     cpu_credits = "standard"
   }
