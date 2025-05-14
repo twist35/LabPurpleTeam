@@ -57,3 +57,14 @@ Password : <Instance Id> (avec le I en majuscule) Exemple : I-00ba406a1c625db3c
 Et voilà ! Vous êtes prêt à dompter la cybersécurité avec Wazuh ! Si vous avez des questions, n'hésitez pas à nous contacter. Let's make security epic! 🔥
 
 *Martin t'es grave beau*
+
+
+
+## FAQ
+
+no ping to 8.8.8.8 from private instance after starting the instance ?
+do tfp
+
+## Prérequis
+
+ansible-galaxy collection install community.mysql

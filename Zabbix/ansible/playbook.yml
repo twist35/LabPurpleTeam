@@ -1,0 +1,4 @@
+- hosts: zabbix
+  become: true
+  roles:
+    - zabbix_server
