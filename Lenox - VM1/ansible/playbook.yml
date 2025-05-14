@@ -3,8 +3,6 @@
   become: yes
 
   roles:
-    - openssl
     - lenox_users
     - lenox_web
-    - cockpit_users
-    - cockpit_web
+    - cockpit

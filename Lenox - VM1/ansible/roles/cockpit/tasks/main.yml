@@ -1,0 +1,53 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for roles/cockpit
+
+- name: Install minimal Cockpit components
+  package:
+    name:
+      - cockpit-bridge
+      - cockpit-system
+      - cockpit-ws
+    state: present
+
+- name: Ensure Cockpit service is started
+  service:
+    name: cockpit
+    state: started
+    enabled: yes
+
+- name: Ensure the cockpit group exists
+  group:
+    name: cockpit
+    state: present
+
+- name: Create user webadmin
+  user:
+    name: "{{ cockpit_user.name }}"
+    password: "{{ cockpit_user.password | password_hash('sha512') }}"
+    groups: "{{ cockpit_user.groups | join(',') }}"
+    state: present
+    shell: /bin/bash
+
+- name: Copy cockpit.conf file
+  copy:
+    src: cockpit.conf
+    dest: /etc/cockpit/cockpit.conf
+    owner: root
+    mode: '0755'
+
+- name: Change Cockpit ListenStream to 443 in cockpit.socket
+  lineinfile:
+    path: /usr/lib/systemd/system/cockpit.socket
+    regexp: '^ListenStream='
+    line: 'ListenStream=443'
+    backup: yes
+
+- name: Reload systemd daemon
+  command: systemctl daemon-reexec
+
+- name: Restart cockpit.socket
+  systemd:
+    name: cockpit.socket
+    state: restarted
+    enabled: yes

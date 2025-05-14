@@ -17,15 +17,15 @@ if (!defined('LENOX_ACCESS')) {
 <body class="bg-gray-100 dark:bg-gray-800">
 <!-- Navigation Bar -->
 <nav class="bg-white border-gray-200 dark:bg-gray-900">
-    <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
+    <div class="flex flex-wrap justify-center items-center mx-auto max-w-screen-xl p-4">
         <a href="index.php?page=site.php" class="flex items-center space-x-3 rtl:space-x-reverse">
-            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Lenox Pub</span>
+            <span class="self-center text-4xl font-bold whitespace-nowrap dark:text-white">Lenox Pub󠁧󠁢</span>
         </a>
         <div class="flex items-center space-x-6 rtl:space-x-reverse"></div>
     </div>
 </nav>
 
-<h1 class="w-1/2 mx-auto mt-5 text-center mb-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white">Our products</h1>
+<h1 class="w-1/2 mx-auto mt-5 text-center mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Our products</h1>
 <div class="grid grid-cols-2 gap-6 w-1/2 mx-auto mt-5 pb-16 mb-5">
     <div class="mx-auto max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <a href="#">

@@ -15,12 +15,6 @@
   command: a2enmod php8.2
   ignore_errors: yes
 
-- name: Enable Apache SSL module
-  command: a2enmod ssl
-  notify: Restart Apache
-  args:
-    creates: /etc/apache2/mods-enabled/ssl.load
-
 - name: Copy Apache configuration
   copy:
     src: lenox.conf
