@@ -29,7 +29,7 @@
 
 - name: Install Wazuh agent
   environment:
-    WAZUH_MANAGER: "10.0.0.2"
+    WAZUH_MANAGER: "10.0.1.50"
   apt:
     name: wazuh-agent
     state: present
