@@ -1,8 +1,8 @@
 <?php
-if (!defined('LENOX_ACCESS')) {
-    http_response_code(403);
-    exit('Direct access not permitted');
-}
+    if (!defined('LENOX_ACCESS')) {
+        http_response_code(403);
+        exit('Direct access not permitted');
+    }
 ?>
 
 <!DOCTYPE html>

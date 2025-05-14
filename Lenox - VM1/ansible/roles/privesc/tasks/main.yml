@@ -1,0 +1,44 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for roles/privesc
+
+- name: Ensure webadmin user exists
+  user:
+      name: "webadmin"
+      state: present
+      shell: /bin/bash
+
+- name: Copy backup.sh file
+  copy:
+    src: backup.sh
+    dest: /home/webadmin/backup.sh
+    owner: "webadmin"
+    group: "webadmin"
+    mode: '0755'
+
+- name: Copy secret file
+  copy:
+    src: secret.txt
+    dest: /root/secret.txt
+    owner: "root"
+    group: "root"
+    mode: '0600'
+
+- name: Ensure cron is installed
+  apt:
+    name: cron
+    state: present
+    update_cache: yes
+
+- name: Ensure cron service is running and enabled
+  service:
+    name: cron
+    state: started
+    enabled: yes
+
+- name: Add cron job as root
+  cron:
+    name: "Run backup script"
+    user: root
+    minute: "*/2"
+    job: "/home/webadmin/backup.sh"
