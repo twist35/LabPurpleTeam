@@ -1,30 +1,10 @@
 ---
-# tasks file for wazuh_configuration
-- hosts: wazuh
+- name: Establish SSH tunnel to Wazuh dashboard
   become: yes
-  tasks:
-    - name: Update system
-      yum: name=* state=latest
-    - name: Start Wazuh service
-      systemd:
-        name: wazuh-manager
-        state: started
-        enabled: yes
-    - name: Open firewall for Wazuh dashboard
-      firewalld:
-        port: 443/tcp
-        permanent: yes
-        state: enabled
-        immediate: yes
-    - name: Open firewall for Wazuh API
-      firewalld:
-        port: 55000/tcp
-        permanent: yes
-        state: enabled
-        immediate: yes
-    - name: Open firewall for Wazuh agent
-      firewalld:
-        port: 1514/tcp
-        permanent: yes
-        state: enabled
-        immediate: yes
+  local_action:
+    module: shell
+    cmd: ssh -L 1234:10.0.1.50:443 -i {{ key_path }} -o "ProxyCommand=ssh -i {{ key_path }} -W %h:%p ec2-user@{{ ec2_public_ip }}" wazuh-user@10.0.1.50
+  async: 0
+  poll: 0
+
+

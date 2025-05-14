@@ -1,8 +1,11 @@
 ---
-- name: Déploiement de la machine Bodega
+- name: Déploiement complet de la machine Bodega
   hosts: bodega
   become: true
+  vars_files:
+    - role_bodega_users/vars/main.yml
+    - role_bodega_web/vars/main.yml
 
   roles:
-    - role_bodega_web
     - role_bodega_users
+    - role_bodega_web

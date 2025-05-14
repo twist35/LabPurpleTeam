@@ -1,9 +1,9 @@
 ---
-# - name: Wazuh deploy
-#   hosts: wazuh
-#   become: yes
-#   roles:
-#     - wazuh_configuration
+- name: Wazuh deploy
+  hosts: localhost
+  become: yes
+  roles:
+    - wazuh_configuration
 
 - name: Deploy Wazuh agent
   hosts: wazuh_agent

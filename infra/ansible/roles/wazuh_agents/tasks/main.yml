@@ -12,6 +12,7 @@
       - curl
       - apt-transport-https
       - lsb-release
+      - gnupg  
     state: present
 
 - name: Add Wazuh GPG key
