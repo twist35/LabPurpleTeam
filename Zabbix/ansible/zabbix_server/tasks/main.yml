@@ -21,6 +21,9 @@
 - name: Installer les paquets nécessaires
   apt:
     name:
+      - python3-pip
+      - python3-pymysql
+      - zabbix-proxy-mysql
       - zabbix-server-mysql
       - zabbix-frontend-php
       - zabbix-apache-conf
@@ -41,6 +44,7 @@
     encoding: utf8
     collation: utf8_bin
     state: present
+    login_unix_socket: /run/mysqld/mysqld.sock
 
 - name: Créer l utilisateur de la base de données
   mysql_user:
@@ -49,6 +53,7 @@
     priv: "{{ zabbix_db_name }}.*:ALL"
     host: localhost
     state: present
+    login_unix_socket: /run/mysqld/mysqld.sock
 
 - name: Importer le schéma SQL de Zabbix
   shell: |

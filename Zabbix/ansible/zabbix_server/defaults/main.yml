@@ -1,5 +1,5 @@
 zabbix_version: "7.0"
-zabbix_repo_deb: "zabbix-release_7.0-2+debian12_all.deb"
+zabbix_repo_deb: "https://repo.zabbix.com/zabbix/7.0/debian-arm64/pool/main/z/zabbix-release/zabbix-release_7.0-2+debian12_all.deb"
 
 zabbix_db_name: "zabbix"
 zabbix_db_user: "zabbix"
