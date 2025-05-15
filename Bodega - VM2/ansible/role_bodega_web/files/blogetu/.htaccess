@@ -1,4 +1,29 @@
-# Empêcher l'accès direct aux fichiers PHP
-<Files *.php>
+# Interdire l'accès direct à tous les fichiers PHP
+<FilesMatch "\.php$">
     Require all denied
+</FilesMatch>
+
+# Autoriser uniquement les requêtes POST pour login.php
+<Files "login.php">
+    <If "%{REQUEST_METHOD} == 'POST'">
+        Require all granted
+    </If>
+</Files>
+
+# Autoriser uniquement les requêtes POST pour post_message.php
+<Files "post_message.php">
+    <If "%{REQUEST_METHOD} == 'POST'">
+        Require all granted
+    </If>
+</Files>
+
+# Autoriser uniquement les requêtes POST pour logout.php
+<Files "logout.php">
+    <If "%{REQUEST_METHOD} == 'POST'">
+        Require all granted
+    </If>
+</Files>
+
+<Files "blog.php">
+    Require all granted
 </Files>

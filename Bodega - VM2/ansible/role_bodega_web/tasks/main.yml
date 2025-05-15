@@ -48,6 +48,55 @@
     login_user: "{{ mysql_ansible_user }}"
     login_password: "{{ mysql_ansible_password }}"
 
+# --- Création des tables ---
+
+- name: Créer la table users si elle n'existe pas
+  community.mysql.mysql_query:
+    login_user: "{{ mysql_blogetu_user }}"
+    login_password: "{{ mysql_blogetu_password }}"
+    login_db: blogetu
+    query: |
+      CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(255) NOT NULL UNIQUE,
+        password_hash VARCHAR(255) NOT NULL,
+        is_admin TINYINT(1) DEFAULT 0
+      );
+
+- name: Créer la table messages si elle n'existe pas
+  community.mysql.mysql_query:
+    login_user: "{{ mysql_blogetu_user }}"
+    login_password: "{{ mysql_blogetu_password }}"
+    login_db: blogetu
+    query: |
+      CREATE TABLE IF NOT EXISTS messages (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        content TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      );
+
+- name: Insérer un utilisateur admin de test
+  community.mysql.mysql_query:
+    login_user: "{{ mysql_blogetu_user }}"
+    login_password: "{{ mysql_blogetu_password }}"
+    login_db: blogetu
+    query: |
+      INSERT IGNORE INTO users (username, password_hash, is_admin)
+      VALUES ('testuser', '$2y$10$7aqVQCi9mzpWReLj9nSusOet.Wx04nkziknDNQfLhRzzpRSUz0oqu', 0);
+
+- name: Insérer un message de bienvenue lié à l'utilisateur admin
+  community.mysql.mysql_query:
+    login_user: "{{ mysql_blogetu_user }}"
+    login_password: "{{ mysql_blogetu_password }}"
+    login_db: blogetu
+    query: |
+      INSERT IGNORE INTO messages (user_id, content)
+      SELECT id, 'Bienvenue sur Blogetu !'
+      FROM users
+      WHERE username = 'testuser';
+
 - name: Créer un dossier pour le site catch-all
   file:
     path: /var/www/empty
@@ -104,19 +153,22 @@
   command: a2enmod rewrite
   notify: Restart Apache
 
-- name: Déployer les fichiers PHP et HTML du sous-domaine blogetu
+- name: Déployer les fichiers du sous-domaine blogetu
   copy:
     src: "{{ item }}"
     dest: "/var/www/blogetu/{{ item | basename }}"
     owner: www-data
     group: www-data
     mode: '0644'
-  with_items:
-    - blogetu/login.php
-    - blogetu/blog.php
-    - blogetu/post_message.php
-    - blogetu/db.php
-    - blogetu/logout.php
+  loop:
+    - blogetu/php/login.php
+    - blogetu/php/blog.php
+    - blogetu/php/post_message.php
+    - blogetu/php/db.php
+    - blogetu/php/logout.php
+    - blogetu/styles2.css
+    - blogetu/login.html
+    - blogetu/index.html
 
 - name: Ajouter un fichier .htaccess pour blogetu (sécuriser le dossier PHP)
   copy:
