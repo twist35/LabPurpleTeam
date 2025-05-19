@@ -61,7 +61,7 @@ Et voilà ! Vous êtes prêt à dompter la cybersécurité avec Wazuh ! Si vous 
 
 ## Déploiement de l'infra Zabbix
 
-ssh -o "IdentitiesOnly=yes" -o "ProxyCommand=ssh -i mykey -W %h:%p ec2-user@51.44.226.200" -i mykey admin@10.0.1.25
+ssh -o "IdentitiesOnly=yes" -o "ProxyCommand=ssh -i ~/.ssh/mkey -W %h:%p ec2-user@51.44.226.200" -i ~/.ssh/mkey admin@10.0.1.25
 
 
 ## FAQ
