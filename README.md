@@ -34,7 +34,7 @@ ssh -o "IdentitiesOnly=yes" -o "ProxyCommand=ssh -i mykey -W %h:%p ec2-user@51.4
 Pour accéder à l’interface de gestion super stylée de Wazuh, utilisez ce tunnel SSH ultra sécurisé :
 
 ```bash
-sudo ssh -L 1234:10.0.1.50:443 -i mykey -o "ProxyCommand=ssh -i mykey -W %h:%p ec2-user@51.44.226.200" wazuh-user@10.0.1.50
+sudo ssh -L 1234:10.0.1.50:443 -i ~/.ssh/mykey -o "ProxyCommand=ssh -i ~/.ssh/mykey -W %h:%p ec2-user@51.44.226.200" wazuh-user@10.0.1.50
 ```
 
 Ensuite, ouvrez votre navigateur sur :
@@ -61,8 +61,18 @@ Et voilà ! Vous êtes prêt à dompter la cybersécurité avec Wazuh ! Si vous 
 
 ## Déploiement de l'infra Zabbix
 
-ssh -o "IdentitiesOnly=yes" -o "ProxyCommand=ssh -i ~/.ssh/mkey -W %h:%p ec2-user@51.44.226.200" -i ~/.ssh/mkey admin@10.0.1.25
+```bash
+ssh -o "IdentitiesOnly=yes" -o "ProxyCommand=ssh -i ~/.ssh/mykey -W %h:%p ec2-user@51.44.226.200" -i ~/.ssh/mykey admin@10.0.1.25
+```
 
+
+## Accès Dashboard Zabbix
+
+```bash
+sudo ssh -L 7654:10.0.1.25:80 -i ~/.ssh/mykey -o "ProxyCommand=ssh -i ~/.ssh/mykey -W %h:%p ec2-user@51.44.226.200" admin@10.0.1.25
+```
+
+Puis se connecter avec un navigateur au http://
 
 ## FAQ
 
