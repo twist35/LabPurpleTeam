@@ -1,0 +1,70 @@
+---
+- name: Mettre à jour le cache APT
+  ansible.builtin.apt:
+    update_cache: yes
+  become: yes
+
+- name: Installer les dépendances
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - wget
+    - gnupg
+    - lsb-release
+    - postgresql
+    - php
+    - php-pgsql
+    - acl
+  become: yes
+
+- name: Ajouter le dépôt Zabbix
+  ansible.builtin.command: >
+    wget -O /tmp/zabbix-release.deb {{ zabbix_repo_deb }}
+  args:
+    creates: /tmp/zabbix-release.deb
+
+- name: Installer le dépôt Zabbix
+  ansible.builtin.apt:
+    deb: /tmp/zabbix-release.deb
+    state: present
+
+
+- name: Installer le serveur Zabbix et l'interface web
+  apt:
+    name:
+      - "{{ zabbix_server_package }}"
+      - "{{ zabbix_web_package }}"
+    state: present
+
+- name: Configurer la base de données PostgreSQL
+  become_user: postgres
+  become: yes
+  postgresql_db:
+    name: "{{ zabbix_db }}"
+    state: present
+
+
+
+
+- name: Créer l'utilisateur Zabbix pour PostgreSQL
+  become_user: postgres
+  postgresql_user:
+    name: "{{ zabbix_db_user }}"
+    password: "{{ zabbix_db_password }}"
+    db: "{{ zabbix_db }}"
+    priv: "ALL"
+
+- name: Démarrer et activer le service Zabbix
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  loop:
+    - zabbix-server
+    - apache2
+    - postgresql
+
+
+
+

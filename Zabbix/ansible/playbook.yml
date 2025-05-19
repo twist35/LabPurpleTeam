@@ -1,5 +1,0 @@
-- hosts: zabbix
-  become: true
-  become_user: root
-  roles:
-    - zabbix_server
