@@ -28,14 +28,14 @@ resource "aws_security_group" "wazuh_sg" {
     from_port   = 1515
     to_port     = 1515
     protocol    = "TCP"
-    cidr_blocks = [aws_subnet.public.cidr_block]
+    cidr_blocks = [data.aws_vpc.main.cidr_block]
   }
 
   ingress {
     from_port   = 1514
     to_port     = 1514
     protocol    = "TCP"
-    cidr_blocks = [aws_subnet.public.cidr_block]
+    cidr_blocks = [data.aws_vpc.main.cidr_block]
   }
 
   ingress {

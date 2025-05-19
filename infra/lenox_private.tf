@@ -3,7 +3,6 @@ resource "aws_instance" "vm_lenox_private" {
   instance_type               = "t3a.nano"
   key_name                    = aws_key_pair.vm_key.key_name
   vpc_security_group_ids      = [
-    module.vm_sg.security_group_id,  # Groupe commun VM
     module.lenox_private_sg.security_group_id  # Groupe propre a Lenox
   ]
   subnet_id                   = aws_subnet.private.id
