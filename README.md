@@ -72,7 +72,7 @@ ssh -o "IdentitiesOnly=yes" -o "ProxyCommand=ssh -i ~/.ssh/mykey -W %h:%p ec2-us
 sudo ssh -L 7654:10.0.1.25:80 -i ~/.ssh/mykey -o "ProxyCommand=ssh -i ~/.ssh/mykey -W %h:%p ec2-user@51.44.226.200" admin@10.0.1.25
 ```
 
-Puis se connecter avec un navigateur au http://
+Puis se connecter avec un navigateur au http://localhost:7654/zabbix
 
 ## FAQ
 
