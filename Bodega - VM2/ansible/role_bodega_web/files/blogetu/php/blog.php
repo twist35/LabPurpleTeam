@@ -8,6 +8,12 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+// Récupérer le statut admin de l'utilisateur connecté
+$stmtAdmin = $pdo->prepare("SELECT is_admin FROM users WHERE id = ?");
+$stmtAdmin->execute([$_SESSION['user_id']]);
+$userInfo = $stmtAdmin->fetch(PDO::FETCH_ASSOC);
+$isAdmin = $userInfo && $userInfo['is_admin'];
+
 // Récupération des messages avec le nom d'utilisateur via jointure
 $stmt = $pdo->prepare("
     SELECT m.content, m.created_at, u.username 
@@ -44,9 +50,19 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <textarea name="message" placeholder="Écrivez un message" required></textarea>
                 <button type="submit">Envoyer</button>
             </form>
-            <a href="logout.php">Se déconnecter</a>
+            <form method="POST" action="logout.php" onsubmit="return confirm('Voulez-vous vraiment vous déconnecter ?');">
+                <button type="submit">Se déconnecter</button>
+            </form>
         </div>
     </div>
+
+    <?php if ($isAdmin): ?>
+    <div class="admin-button-container">
+        <form action="admin.php" method="get" style="display:inline;">
+            <button type="submit">Admin Page</button>
+        </form>
+    </div>
+    <?php endif; ?>
 
 </body>
 </html>

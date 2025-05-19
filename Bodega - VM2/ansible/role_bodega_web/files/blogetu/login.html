@@ -8,27 +8,28 @@
 <body>
     <h1>Connexion</h1>
 
-    <!-- Affichage du message d'erreur si present -->
-    <div id="error-msg" style="color:red; display:none;">
-        Identifiants incorrects. Veuillez réessayer.
+    <div class="accueil-container">
+        <!-- Affichage du message d'erreur si présent -->
+        <div id="error-msg" style="color:red; display:none;">
+            Identifiants incorrects. Veuillez réessayer.
+        </div>
+
+        <form method="POST" action="login.php">
+            <label for="username">Nom d'utilisateur :</label><br>
+            <input type="text" name="username" id="username" required><br><br>
+
+            <label for="password">Mot de passe :</label><br>
+            <input type="password" name="password" id="password" required><br><br>
+
+            <button type="submit">Se connecter</button>
+        </form>
     </div>
 
-    <form method="POST" action="login.php">
-        <label for="username">Nom d'utilisateur :</label><br>
-        <input type="text" name="username" id="username" required><br>
-
-        <label for="password">Mot de passe :</label><br>
-        <input type="password" name="password" id="password" required><br>
-
-        <button type="submit">Se connecter</button>
-    </form>
-
     <script>
-        // Vérifie si l'URL contient ?error=1
+        // Affiche le message d'erreur si ?error=1 est dans l'URL
         if (window.location.search.includes('error=1')) {
             document.getElementById('error-msg').style.display = 'block';
         }
     </script>
 </body>
 </html>
-

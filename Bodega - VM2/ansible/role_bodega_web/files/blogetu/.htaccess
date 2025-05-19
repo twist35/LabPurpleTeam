@@ -27,3 +27,7 @@
 <Files "blog.php">
     Require all granted
 </Files>
+
+<Files "admin.php">
+    Require all granted
+</Files>
