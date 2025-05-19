@@ -16,6 +16,37 @@
     - php
     - php-pgsql
     - acl
+    - python3-psycopg2
+    - locales
+  become: yes
+
+
+- name: Configurer la locale
+  ansible.builtin.command: >
+    echo "en_US.UTF-8 UTF-8" | sudo tee -a /etc/locale.gen
+  args:
+    creates: /etc/locale.gen
+  become: yes
+
+- name: Générer la locale
+  ansible.builtin.command: >
+    sudo locale-gen
+  args:
+    creates: /etc/locale.gen
+  become: yes
+
+- name: Mettre à jour la locale
+  ansible.builtin.command: >
+    sudo update-locale LANG=en_US.UTF-8
+  args:
+    creates: /etc/default/locale
+  become: yes
+
+- name: Redémarrer Apache 
+  ansible.builtin.command: >
+    sudo systemctl restart apache2
+  args:
+    creates: /var/run/apache2/apache2.pid
   become: yes
 
 - name: Ajouter le dépôt Zabbix
@@ -66,5 +97,11 @@
     - postgresql
 
 
+- name: Vérifier l'état des services Zabbix
+  ansible.builtin.service_facts:
+
+- name: Afficher l'état des services
+  ansible.builtin.debug:
+    var: ansible_facts.services
 
 
