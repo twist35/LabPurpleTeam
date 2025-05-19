@@ -1,2 +1,20 @@
 ---
 # handlers file for zabbix_server
+- name: Redémarrer Apache
+  become: yes
+  ansible.builtin.service:
+    name: apache2
+    state: restarted
+
+- name: Redémarrer le serveur Zabbix
+  become: yes
+  ansible.builtin.service:
+    name: "{{ zabbix_server_package }}"
+    state: restarted
+
+- name: Redémarrer le serveur PostgreSQL
+  become: yes
+  ansible.builtin.service:
+    name: postgresql
+    state: restarted
+

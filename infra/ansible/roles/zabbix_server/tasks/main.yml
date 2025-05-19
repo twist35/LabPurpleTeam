@@ -20,7 +20,6 @@
     - locales
   become: yes
 
-
 - name: Configurer la locale
   ansible.builtin.command: >
     echo "en_US.UTF-8 UTF-8" | sudo tee -a /etc/locale.gen
@@ -42,13 +41,6 @@
     creates: /etc/default/locale
   become: yes
 
-- name: Redémarrer Apache 
-  ansible.builtin.command: >
-    sudo systemctl restart apache2
-  args:
-    creates: /var/run/apache2/apache2.pid
-  become: yes
-
 - name: Ajouter le dépôt Zabbix
   ansible.builtin.command: >
     wget -O /tmp/zabbix-release.deb {{ zabbix_repo_deb }}
@@ -60,48 +52,72 @@
     deb: /tmp/zabbix-release.deb
     state: present
 
-
-- name: Installer le serveur Zabbix et l'interface web
+- name: Installer le serveur Zabbix et l'interface web et le support PostgreSQL
   apt:
     name:
       - "{{ zabbix_server_package }}"
       - "{{ zabbix_web_package }}"
+      - zabbix-server-pgsql
     state: present
 
-- name: Configurer la base de données PostgreSQL
-  become_user: postgres
-  become: yes
-  postgresql_db:
+- name: Configurer la base de données PostgreSQL pour Zabbix
+  community.postgresql.postgresql_db:
     name: "{{ zabbix_db }}"
     state: present
-
-
-
+  become_user: postgres
 
 - name: Créer l'utilisateur Zabbix pour PostgreSQL
-  become_user: postgres
-  postgresql_user:
+  community.postgresql.postgresql_user:
     name: "{{ zabbix_db_user }}"
     password: "{{ zabbix_db_password }}"
     db: "{{ zabbix_db }}"
-    priv: "ALL"
+    priv: "ALL" # Donne tous les privilèges sur la DB Zabbix
+  become_user: postgres # S'exécute en tant qu'utilisateur postgres
 
-- name: Démarrer et activer le service Zabbix
+
+- name: Remplacer la méthode d'authentification locale pour zabbix à trust
+  become: yes
+  lineinfile:
+    path: /etc/postgresql/15/main/pg_hba.conf
+    regexp: '^local\s+all\s+postgres\s+'
+    line: 'local   all   postgres   trust'
+    state: present
+    backrefs: yes
+  notify: Redémarrer PostgreSQL
+
+- name: Initialiser le schéma de la base de données Zabbix
+  community.postgresql.postgresql_db:
+    name: "{{ zabbix_db }}"
+    owner: "{{ zabbix_db_user }}"
+    encoding: "UTF8"
+    state: present
+  become_user: postgres
+
+
+- name: Initialiser la base de données Zabbix avec le schéma SQL
+  ansible.builtin.command: >
+    zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | psql -U {{ zabbix_db_user }} -d {{ zabbix_db }}
+  args:
+    _uses_shell: true
+
+
+
+- name: Copier le fichier de configuration de l'interface web Zabbix (zabbix.conf.php)
+  ansible.builtin.template:
+    src: zabbix.conf.php.j2 # Assurez-vous que ce fichier existe dans votre répertoire 'templates'
+    dest: /etc/zabbix/web/zabbix.conf.php
+    owner: www-data # L'utilisateur sous lequel Apache/PHP s'exécute
+    group: www-data
+    mode: '0644'
+  notify: Redémarrer Apache
+
+- name: Démarrer et activer les services Zabbix et Apache
   ansible.builtin.service:
     name: "{{ item }}"
     state: started
     enabled: true
   loop:
+    - postgresql
     - zabbix-server
     - apache2
-    - postgresql
-
-
-- name: Vérifier l'état des services Zabbix
-  ansible.builtin.service_facts:
-
-- name: Afficher l'état des services
-  ansible.builtin.debug:
-    var: ansible_facts.services
-
-
+  notify: Redémarrer Apache
