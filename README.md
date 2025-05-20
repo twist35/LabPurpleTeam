@@ -3,6 +3,19 @@
 Bienvenue dans **LabPurpleTeam**, votre laboratoire de sécurité ultra-connecté et blindé grâce à **Wazuh** ! Ici, on fait de la surveillance de sécurité comme des pros. 💪
 
 ---
+## Déploiement de l'infrastructure
+
+```bash
+# Initialiser le projet Terraform
+terraform init
+
+# Vérifier le plan d’exécution
+terraform plan
+
+# Appliquer le plan (créer/modifier l’infrastructure)
+terraform apply
+```
+
 
 ## 🛠️ Déploiement de l'architecture Wazuh
 
@@ -81,4 +94,5 @@ do tfp
 
 ## Prérequis
 
-ansible-galaxy collection install community.mysql
+
+Ansible, Terraform
