@@ -1,0 +1,17 @@
+- name: Download Zabbix repo .deb package
+  ansible.builtin.get_url:
+    url: https://repo.zabbix.com/zabbix/7.0/debian/pool/main/z/zabbix-release/zabbix-release_7.0-1+debian12_all.deb
+    dest: /tmp/zabbix-release_7.0.deb
+
+- name: Install Zabbix repo
+  ansible.builtin.apt:
+    deb: /tmp/zabbix-release_7.0.deb
+    state: present
+
+- name: Run apt update
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Include Zabbix server role
+  include_role:
+    name: community.zabbix.zabbix_server

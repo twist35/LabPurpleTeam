@@ -5,22 +5,29 @@
 #   roles:
 #     - wazuh_configuration
 
- - name: Deploy Wazuh agent
-   hosts: wazuh_agent
-   become: yes
-   roles:
-     - wazuh_agents
+#  - name: Deploy Wazuh agent
+#    hosts: wazuh_agent
+#    become: yes
+#    roles:
+#      - wazuh_agents
 
-#- name: Deploy zabbix server
-#  hosts: zabbix_server
-#  become: true
-#  become_user: root
-#  roles:
+# - name: Deploy zabbix server
+#   hosts: zabbix_server
+#   become: yes
+#   roles:
 #    - zabbix_server
 
-#- name: Deploy zabbix agent
-#  hosts: zabbix_agent
-#  become: true
-#  become_user: root
-#  roles:
-#    - zabbix_agent
+# #- name: Deploy zabbix agent
+# #  hosts: zabbix_agent
+# #  become: true
+# #  become_user: root
+# #  roles:
+# #    - zabbix_agent
+
+
+- name: Install Zabbix server via custom role
+  hosts: zabbix_server
+  become: true
+  roles:
+    - zabbix_server
+

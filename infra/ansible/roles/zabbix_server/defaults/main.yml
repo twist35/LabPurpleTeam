@@ -1,11 +1,10 @@
-zabbix_version: "7.0"
-zabbix_repo_deb: "https://repo.zabbix.com/zabbix/7.0/debian-arm64/pool/main/z/zabbix-release/zabbix-release_7.0-2+debian12_all.deb"
-
-
-
-zabbix_server_package: "zabbix-server-pgsql"
-zabbix_web_package: "zabbix-frontend-php"
-zabbix_db: "zabbix"
-zabbix_db_user: "zabbix"
-zabbix_db_password: "zabbix_pass"
-
+---
+zabbix_server_database: "pgsql"
+zabbix_server_dbhost: "localhost"
+zabbix_server_dbname: "zabbix"
+zabbix_server_dbuser: "zabbix"
+zabbix_server_dbpassword: "zabbix"
+zabbix_server_database_long: "PostgreSQL"
+zabbix_server_zabbix_server_package_state: "present"
+zabbix_server_zabbix_server_service_state: "started"
+zabbix_server_zabbix_server_service_enabled: true
