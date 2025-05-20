@@ -170,7 +170,6 @@
     - blogetu/php/login.php
     - blogetu/php/admin.php
     - blogetu/php/blog.php
-    - blogetu/php/post_message.php
     - blogetu/php/db.php
     - blogetu/php/logout.php
     - blogetu/styles2.css
