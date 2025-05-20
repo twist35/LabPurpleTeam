@@ -1,10 +1,43 @@
----
-- name: Establish SSH tunnel to Wazuh dashboard
-  become: yes
-  local_action:
-    module: shell
-    cmd: ssh -L 1234:10.0.1.50:443 -i {{ key_path }} -o "ProxyCommand=ssh -i {{ key_path }} -W %h:%p ec2-user@{{ ec2_public_ip }}" wazuh-user@10.0.1.50
-  async: 0
-  poll: 0
+- name: Installer mailutils pour l’envoi d’emails
+  apt:
+    name: mailutils
+    state: present
 
+- name: Déployer le script d'envoi d'email
+  copy:
+    dest: /var/ossec/active-response/bin/send_email.sh
+    mode: '0755'
+    content: |
+      #!/bin/bash
 
+      # Lire l'entrée JSON envoyée par Wazuh
+      read input
+
+      # Extraire le niveau de la règle et le log complet
+      LEVEL=$(echo "$input" | grep -oP '"level":\s*\K[0-9]+')
+      LOG_FULL=$(echo "$input" | grep -oP '"full_log":\s*"\K([^"]*)')
+
+      # Si le niveau est supérieur à 8, envoyer l'email
+      if [ "$LEVEL" -gt 8 ]; then
+        echo -e "Alerte Wazuh critique (niveau $LEVEL)\n\nLog complet :\n$LOG_FULL" \
+          | mail -s "Alerte Wazuh - Niveau $LEVEL détecté sur $(hostname)" antonin.sabiron@isen-ouest.yncrea.fr
+
+      fi
+
+- name: Ajouter l'active response dans ossec.conf
+  blockinfile:
+    path: /var/ossec/etc/ossec.conf
+    marker: "<!-- {mark} ANSIBLE EMAIL RESPONSE -->"
+    insertafter: "<active-response>"
+    block: |
+      <command>
+        <name>send_email</name>
+        <executable>send_email.sh</executable>
+        <timeout_allowed>no</timeout_allowed>
+      </command>
+
+- name: Redémarrer le service wazuh-manager
+  systemd:
+    name: wazuh-manager
+    state: restarted
+    enabled: true
