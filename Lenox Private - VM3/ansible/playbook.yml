@@ -1,0 +1,6 @@
+- name: Complete deploy
+  hosts: lenox_private
+  become: yes
+
+  roles:
+    - admin

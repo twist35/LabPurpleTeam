@@ -4,9 +4,9 @@
 
 - name: Ensure webadmin user exists
   user:
-      name: "webadmin"
-      state: present
-      shell: /bin/bash
+    name: "webadmin"
+    state: present
+    shell: /bin/bash
 
 - name: Copy backup.sh file
   copy:
@@ -16,10 +16,28 @@
     group: "webadmin"
     mode: '0755'
 
+- name: Ensure the repository .ssh exist
+  file:
+    path: /home/webadmin/.ssh
+    state: directory
+    owner: webadmin
+    group: webadmin
+    mode: '0700'
+
+- name: Gen SSH key pair
+  community.crypto.openssh_keypair:
+    path: /home/webadmin/.ssh/id_rsa
+    type: rsa
+    size: 2048
+    owner: webadmin
+    group: webadmin
+    mode: '0600'
+  register: ssh_keypair
+
 - name: Copy secret file
   copy:
-    src: secret.txt
-    dest: /root/secret.txt
+    src: invoice-tutorial.pdf
+    dest: /root/invoice-tutorial.pdf
     owner: "root"
     group: "root"
     mode: '0600'

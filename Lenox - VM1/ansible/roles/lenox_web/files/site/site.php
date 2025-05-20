@@ -25,7 +25,7 @@
     </div>
 </nav>
 
-<h1 class="w-1/2 mx-auto mt-5 text-center mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Our products</h1>
+<h1 class="w-1/2 mx-auto mt-5 text-center mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Beer, because no great story started with someone eating a salad</h1>
 <div class="grid grid-cols-2 gap-6 w-1/2 mx-auto mt-5 pb-16 mb-5">
     <div class="mx-auto max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <a href="#">
