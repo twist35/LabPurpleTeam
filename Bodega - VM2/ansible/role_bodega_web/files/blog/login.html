@@ -9,7 +9,6 @@
     <h1>Connexion</h1>
 
     <div class="accueil-container">
-        <!-- Affichage du message d'erreur si présent -->
         <div id="error-msg" style="color:red; display:none;">
             Identifiants incorrects. Veuillez réessayer.
         </div>
@@ -26,7 +25,6 @@
     </div>
 
     <script>
-        // Affiche le message d'erreur si ?error=1 est dans l'URL
         if (window.location.search.includes('error=1')) {
             document.getElementById('error-msg').style.display = 'block';
         }

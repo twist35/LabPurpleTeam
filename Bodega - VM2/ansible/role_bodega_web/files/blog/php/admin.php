@@ -25,10 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['backup_name']) && iss
     }
     $mdp = trim($_POST['mdp']);
 
-    // Injection volontaire autorisée via le mot de passe (danger)
     $cmd = "zip -r -P $mdp $backup_name . 2>&1";
-
-    file_put_contents("debug_cmd.txt", $cmd); // debug
 
     exec($cmd, $exec_output, $ret);
 

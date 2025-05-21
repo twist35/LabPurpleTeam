@@ -12,26 +12,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Vérification des informations de connexion
     $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username LIMIT 1");
     $stmt->execute(['username' => $username]);
     $user = $stmt->fetch();
 
-    if ($user && password_verify($password, $user['password_hash'])) {
-        // Connexion réussie
+    if ($user && md5($password) === $user['password_hash']) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['is_admin'] = $user['is_admin'];
         header('Location: blog.php');
         exit;
     } else {
-        // Mauvais identifiants — redirection vers login.html avec message d’erreur (optionnel)
         header('Location: login.html?error=1');
         exit;
     }
 }
 
-// Si ce n'est pas une requête POST, interdire l'accès
-http_response_code(405); // Méthode non autorisée
+http_response_code(405); 
 echo "Méthode non autorisée.";
 exit;

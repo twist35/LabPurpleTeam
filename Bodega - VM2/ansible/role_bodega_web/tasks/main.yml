@@ -83,14 +83,60 @@
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       );
 
-- name: Insérer un utilisateur admin de test
+- name: Désactiver les contraintes de clé étrangère
+  community.mysql.mysql_query:
+    login_user: "{{ mysql_blogetu_user }}"
+    login_password: "{{ mysql_blogetu_password }}"
+    login_db: blogetu
+    query: SET FOREIGN_KEY_CHECKS=0;
+
+- name: Vider la table messages avec DELETE
+  community.mysql.mysql_query:
+    login_user: "{{ mysql_blogetu_user }}"
+    login_password: "{{ mysql_blogetu_password }}"
+    login_db: blogetu
+    query: DELETE FROM messages;
+
+- name: Vider la table users avec DELETE
+  community.mysql.mysql_query:
+    login_user: "{{ mysql_blogetu_user }}"
+    login_password: "{{ mysql_blogetu_password }}"
+    login_db: blogetu
+    query: DELETE FROM users;
+
+- name: Réactiver les contraintes de clé étrangère
+  community.mysql.mysql_query:
+    login_user: "{{ mysql_blogetu_user }}"
+    login_password: "{{ mysql_blogetu_password }}"
+    login_db: blogetu
+    query: SET FOREIGN_KEY_CHECKS=1;
+
+- name: Insérer un utilisateur 
   community.mysql.mysql_query:
     login_user: "{{ mysql_blogetu_user }}"
     login_password: "{{ mysql_blogetu_password }}"
     login_db: blogetu
     query: |
       INSERT IGNORE INTO users (username, password_hash, is_admin)
-      VALUES ('testuser', '$2y$10$7aqVQCi9mzpWReLj9nSusOet.Wx04nkziknDNQfLhRzzpRSUz0oqu', 0);
+      VALUES ('martin', 'a86222b593d488c39006853850916ef0', 1);
+
+- name: Insérer un utilisateur mael
+  community.mysql.mysql_query:
+    login_user: "{{ mysql_blogetu_user }}"
+    login_password: "{{ mysql_blogetu_password }}"
+    login_db: blogetu
+    query: |
+      INSERT IGNORE INTO users (username, password_hash, is_admin)
+      VALUES ('mael', '718cbd44c3b53052e12dc8c7a75815dc', 0);
+
+- name: Insérer un utilisateur de test
+  community.mysql.mysql_query:
+    login_user: "{{ mysql_blogetu_user }}"
+    login_password: "{{ mysql_blogetu_password }}"
+    login_db: blogetu
+    query: |
+      INSERT IGNORE INTO users (username, password_hash, is_admin)
+      VALUES ('testuser', 'a471055764b536d206b007f164241150', 0);
 
 - name: Insérer un message de bienvenue lié à l'utilisateur admin
   community.mysql.mysql_query:
@@ -101,26 +147,19 @@
       INSERT IGNORE INTO messages (user_id, content)
       SELECT id, 'Bienvenue sur Blogetu !'
       FROM users
-      WHERE username = 'testuser';
+      WHERE username = 'mael';
 
-- name: Créer un dossier pour le site catch-all
+- name: Créer un dossier pour le site
   file:
-    path: /var/www/empty
+    path: /var/www/html
     state: directory
     mode: '0755'
 
-- name: Copier les fichiers du site principal (domaine principal)
+
+- name: Copier les fichiers du domaine 
   copy:
     src: site/
     dest: /var/www/html/
-    owner: www-data
-    group: www-data
-    mode: '0755'
-
-- name: Copier les fichiers du sous-domaine blogetu
-  copy:
-    src: blogetu/
-    dest: /var/www/blogetu/
     owner: www-data
     group: www-data
     mode: '0755'
@@ -131,10 +170,10 @@
     dest: /etc/apache2/sites-available/1-bodega.conf
   notify: Restart Apache
 
-- name: Copier la configuration Apache du sous-domaine blogetu
+- name: Copier la configuration Apache du sous-domaine blog
   copy:
-    src: 2-blogetu.conf
-    dest: /etc/apache2/sites-available/2-blogetu.conf
+    src: 2-blog.conf
+    dest: /etc/apache2/sites-available/2-blog.conf
   notify: Restart Apache
 
 - name: Désactiver le VirtualHost par défaut
@@ -149,37 +188,37 @@
     creates: "/etc/apache2/sites-enabled/1-bodega.conf"
   notify: Restart Apache
 
-- name: Activer le VirtualHost blogetu (sous-domaine)
-  command: a2ensite 2-blogetu.conf
+- name: Activer le VirtualHost blog (sous-domaine)
+  command: a2ensite 2-blog.conf
   args:
-    creates: "/etc/apache2/sites-enabled/2-blogetu.conf"
+    creates: "/etc/apache2/sites-enabled/2-blog.conf"
   notify: Restart Apache
 
 - name: Activer les modules Apache nécessaires
   command: a2enmod rewrite
   notify: Restart Apache
 
-- name: Déployer les fichiers du sous-domaine blogetu
+- name: Déployer les fichiers du sous-domaine blog
   copy:
     src: "{{ item }}"
-    dest: "/var/www/blogetu/{{ item | basename }}"
+    dest: "/var/www/blog/{{ item | basename }}"
     owner: www-data
     group: www-data
     mode: '0644'
   loop:
-    - blogetu/php/login.php
-    - blogetu/php/admin.php
-    - blogetu/php/blog.php
-    - blogetu/php/db.php
-    - blogetu/php/logout.php
-    - blogetu/styles2.css
-    - blogetu/login.html
-    - blogetu/index.html
+    - blog/php/login.php
+    - blog/php/admin.php
+    - blog/php/blog.php
+    - blog/php/db.php
+    - blog/php/logout.php
+    - blog/styles2.css
+    - blog/login.html
+    - blog/index.html
 
-- name: Ajouter un fichier .htaccess pour blogetu (sécuriser le dossier PHP)
+- name: Ajouter un fichier .htaccess pour blog (sécuriser le dossier PHP)
   copy:
-    src: blogetu/.htaccess
-    dest: /var/www/blogetu/.htaccess
+    src: blog/.htaccess
+    dest: /var/www/blog/.htaccess
     owner: www-data
     group: www-data
     mode: '0644'

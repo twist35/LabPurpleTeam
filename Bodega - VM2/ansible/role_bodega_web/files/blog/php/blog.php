@@ -7,7 +7,6 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// POST sécurisé (prépare la requête)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['message'])) {
     $user_id = $_SESSION['user_id'];
     $content = trim($_POST['message']);
@@ -21,7 +20,6 @@ $stmtAdmin->execute([$_SESSION['user_id']]);
 $userInfo = $stmtAdmin->fetch(PDO::FETCH_ASSOC);
 $isAdmin = $userInfo && $userInfo['is_admin'];
 
-// Injection SQL de second ordre ici : le filtre est vulnérable
 $filter = $_GET['filter'] ?? '';
 $sql = "
     SELECT m.content, m.created_at, u.username
