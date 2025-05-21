@@ -17,10 +17,10 @@
 #   roles:
 #    - zabbix_server
 
-# #- name: Deploy zabbix agent
-# #  hosts: zabbix_agent
-# #  become: true
-# #  become_user: root
-# #  roles:
-# #    - zabbix_agent
+# - name: Deploy zabbix agent
+#   hosts: zabbix_agent
+#   become: true
+#   become_user: root
+#   roles:
+#     - zabbix_agent
 

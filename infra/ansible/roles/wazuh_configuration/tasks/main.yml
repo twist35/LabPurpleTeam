@@ -1,40 +1,72 @@
-- name: Installer mailutils pour l’envoi d’emails
-  apt:
-    name: mailutils
-    state: present
-
-- name: Déployer le script d'envoi d'email
+- name: Déployer le script d'active response
   copy:
-    dest: /var/ossec/active-response/bin/send_email.sh
+    dest: /var/ossec/active-response/bin/log_local.sh
     mode: '0755'
     content: |
       #!/bin/bash
 
-      # Lire l'entrée JSON envoyée par Wazuh
       read input
 
-      # Extraire le niveau de la règle et le log complet
       LEVEL=$(echo "$input" | grep -oP '"level":\s*\K[0-9]+')
       LOG_FULL=$(echo "$input" | grep -oP '"full_log":\s*"\K([^"]*)')
 
-      # Si le niveau est supérieur à 8, envoyer l'email
-      if [ "$LEVEL" -gt 8 ]; then
-        echo -e "Alerte Wazuh critique (niveau $LEVEL)\n\nLog complet :\n$LOG_FULL" \
-          | mail -s "Alerte Wazuh - Niveau $LEVEL détecté sur $(hostname)" antonin.sabiron@isen-ouest.yncrea.fr
+      echo "$(date) - CRITICAL ALERT LEVEL $LEVEL: $LOG_FULL" >> /var/log/wazuh_alerts_local.log
+      
 
-      fi
 
 - name: Ajouter l'active response dans ossec.conf
   blockinfile:
     path: /var/ossec/etc/ossec.conf
-    marker: "<!-- {mark} ANSIBLE EMAIL RESPONSE -->"
-    insertafter: "<active-response>"
+    marker: "<!-- {mark} ANSIBLE LOGLOCAL -->"
+    insertbefore: "<!-- Log analysis -->"
     block: |
-      <command>
-        <name>send_email</name>
-        <executable>send_email.sh</executable>
+        <command>
+        <name>log_local</name>
+        <executable>log_local.sh</executable>
         <timeout_allowed>no</timeout_allowed>
-      </command>
+        </command>    
+
+- name: Ajouter le bloc <active-response> dans ossec.conf
+  blockinfile:
+    path: /var/ossec/etc/ossec.conf
+    marker: "<!-- {mark} ANSIBLE LOGLOCAL RESPONSE -->"
+    insertafter: "<!-- END ANSIBLE LOGLOCAL -->" 
+    block: |
+          <active-response>
+            <command>log_local</command>
+            <location>local</location>
+            <level>10</level>
+          </active-response>
+
+          <active-response>
+            <command>log_local</command>
+            <location>local</location>
+            <level>9</level>
+          </active-response>
+
+          <active-response>
+            <command>log_local</command>
+            <location>local</location>
+            <level>8</level>
+          </active-response>
+
+          <active-response>
+            <command>log_local</command>
+            <location>local</location>
+            <level>7</level>
+          </active-response>
+
+          <active-response>
+            <command>log_local</command>
+            <location>local</location>
+            <level>6</level>
+          </active-response>
+
+          <active-response>
+            <command>log_local</command>
+            <location>local</location>
+            <level>5</level>
+          </active-response>
 
 - name: Redémarrer le service wazuh-manager
   systemd:
