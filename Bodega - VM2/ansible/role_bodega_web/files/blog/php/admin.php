@@ -23,14 +23,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['backup_name']) && iss
     if ($backup_name === '') {
         $backup_name = "site_backup.zip";
     }
+
+    $safe_backup_name = escapeshellarg($backup_name);
+
     $mdp = trim($_POST['mdp']);
 
-    $cmd = "zip -r -P $mdp $backup_name . 2>&1";
+    $cmd = "zip -r -P $mdp $safe_backup_name . 2>&1";
 
     exec($cmd, $exec_output, $ret);
 
     if ($ret === 0 && file_exists($backup_name)) {
-        $message = "Backup créé avec succès : <a href=\"$backup_name\">Télécharger $backup_name</a>";
+        $message = "Backup créé avec succès : <a href=\"" . htmlspecialchars($backup_name) . "\">Télécharger " . htmlspecialchars($backup_name) . "</a>";
     } else {
         $message = "Erreur lors de la création du backup.";
     }
@@ -56,7 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['backup_name']) && iss
 
             <input type="submit" value="Créer le backup">
         </form>
-    <div class="accueil-container">
+    </div>
+
     <p><?php echo $message; ?></p>
 
     <?php if (!empty($exec_output)): ?>

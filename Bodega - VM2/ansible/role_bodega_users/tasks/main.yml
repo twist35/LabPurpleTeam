@@ -3,8 +3,16 @@
   user:
     name: martin
     state: present
-    groups: sudo
+    groups: ""
     shell: /bin/bash
+
+- name: Restreindre les permissions du home de martin
+  file:
+    path: /home/martin
+    state: directory
+    owner: martin
+    group: martin
+    mode: '0755'
 
 - name: Copier le script de backup
   copy:
