@@ -1,15 +1,15 @@
----
-- name: Wazuh deploy
-  hosts: wazuh_server 
-  become: yes
-  roles:
-    - wazuh_configuration
+# ---
+# - name: Wazuh deploy
+#   hosts: wazuh_server 
+#   become: yes
+#   roles:
+#     - wazuh_configuration
 
-#  - name: Deploy Wazuh agent
-#    hosts: wazuh_agent
-#    become: yes
-#    roles:
-#      - wazuh_agents
+ - name: Deploy Wazuh agent
+   hosts: wazuh_agent
+   become: yes
+   roles:
+     - wazuh_agents
 
 # - name: Deploy zabbix server
 #   hosts: zabbix_server
