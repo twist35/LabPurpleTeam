@@ -12,6 +12,19 @@
     dest: /home/martin/backup.sh
     mode: '0755'
 
+- name: Copier le premier flag
+  copy:
+    src: userflag.txt
+    dest: /home/martin/userflag.txt
+    mode: '0755'
+
+- name: Copier le second flag
+  copy:
+    src: rootflag.txt
+    dest: /root/rootflag.txt
+    mode: '0755'
+
+  
 - name: Supprimer martin du groupe sudo s'il y est
   user:
     name: martin
