@@ -1,11 +1,11 @@
 variable "ami" {
   type    = string
-  default = "ami-0644165ab979df02d" #deb 12 
+  default = "ami-0fbb72557598f5284" #deb 12 
 }
 
 variable "wazuh_ami" {
   type    = string
-  default = "ami-0c11297ad8e89ffdf" #AMI wazuh  
+  default = "ami-0d6058eefed5eb7c7" #AMI wazuh  
 }
 
 variable "instance_type" {

@@ -68,7 +68,7 @@ resource "aws_eip_association" "nat_assoc" {
 # Instance NAT
 # ------------------------------
 resource "aws_instance" "nat" {
-  ami               = "ami-015c7728d5cb3dccd"  # Utilise la variable pour l'AMI
+  ami               = "ami-0137cee1a6fb4f763"  # AMI NAT AWS
   instance_type     = "t3.nano"  # Utilise la variable pour l'instance_type
   key_name          = aws_key_pair.vm_key.key_name  # Utilise la variable pour la clé SSH
 
