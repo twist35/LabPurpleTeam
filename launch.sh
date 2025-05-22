@@ -18,5 +18,5 @@ sed -i "s/^bastion_ip: .*/bastion_ip: ${BASTION_IP}/" "$GROUP_VARS_FILE"
 echo "✅ Résultat final :"
 grep bastion_ip "$GROUP_VARS_FILE"
 
-echo "📦 Lancement du playbook Ansible ..."
-ansible-playbook -i ../deploiement/inventory/ playbook.yml
+#echo "📦 Lancement du playbook Ansible ..."
+#ansible-playbook -i ../deploiement/inventory/ playbook.yml
