@@ -5,7 +5,8 @@ module "vm_sg" {
   description = "Security group for SSH+HTTP access on VMs"
   vpc_id      = var.vpc_id
 
-  ingress_with_cidr_blocks = [{
+  ingress_with_cidr_blocks = [
+    {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -18,6 +19,13 @@ module "vm_sg" {
       protocol    = "tcp"
       cidr_blocks = "0.0.0.0/0"
       description = "Allow HTTP traffic from anywhere"
+    },
+    {
+      from_port   = 10050
+      to_port     = 10050
+      protocol    = "tcp"
+      cidr_blocks = data.aws_vpc.main.cidr_block
+      description = "Allow zaabix traffic from vpc"
     },
   ]
   egress_with_cidr_blocks = [{
@@ -75,6 +83,13 @@ module "lenox_sg" {
       protocol    = "tcp"
       cidr_blocks = "0.0.0.0/0"
       description = "Allow HTTP traffic from anywhere"
+    },
+    {
+      from_port   = 10050
+      to_port     = 10050
+      protocol    = "tcp"
+      cidr_blocks = data.aws_vpc.main.cidr_block
+      description = "Allow zaabix traffic from vpc"
     },
   ]
   egress_with_cidr_blocks = [{
