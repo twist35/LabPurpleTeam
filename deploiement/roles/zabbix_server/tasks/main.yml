@@ -1,0 +1,6 @@
+---
+- name: Install PostgreSQL before deploying Zabbix
+  include_tasks: install_postgres.yml
+
+- name: Deploy Zabbix Server using community.zabbix
+  include_tasks: zabbix_serv_deploy.yml

@@ -1,0 +1,4 @@
+# zabbix_server_dbhost: localhost
+# zabbix_server_dbname: zabbix
+# zabbix_server_dbuser: zabbix
+# zabbix_server_dbpassword: zabbix

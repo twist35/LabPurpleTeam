@@ -1,0 +1,9 @@
+# defaults/main.yml
+
+cockpit_port: 443
+cockpit_selinux: false
+cockpit_user:
+  name: "webadmin"
+  password: "k6Ms94tK062OvDH"
+  groups: ["cockpit"]
+cockpit_disable_terminal: true

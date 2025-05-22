@@ -1,0 +1,7 @@
+#SPDX-License-Identifier: MIT-0
+---
+# handlers file for roles/cockpit
+- name: restart cockpit
+  service:
+    name: cockpit
+    state: restarted
