@@ -18,3 +18,8 @@
     name: postgresql
     state: restarted
 
+
+- name: Redémarrer Zabbix
+  community.docker.docker_compose:
+    project_src: "{{ zabbix_docker_compose_path }}"
+    state: restarted

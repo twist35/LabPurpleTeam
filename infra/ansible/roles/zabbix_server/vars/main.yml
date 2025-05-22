@@ -1,9 +1,5 @@
-db_type: "POSTGRESQL"
-db_host: "localhost"
-db_port: "5432"
-zabbix_db: zabbix
-zabbix_db_user: zabbix
-zabbix_db_password: mdpZabbix
-zabbix_server_package: "zabbix-server-pgsql"
-zabbix_web_package: "zabbix-frontend-php"
-zabbix_repo_deb: "https://repo.zabbix.com/zabbix/6.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.0-4+ubuntu20.04_all.deb"
+zabbix_server_dbhost: localhost
+zabbix_server_dbname: zabbix
+zabbix_server_dbuser: zabbix
+zabbix_server_dbpassword: zabbix
+zabbix_server_database: postgresql

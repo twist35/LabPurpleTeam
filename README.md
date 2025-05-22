@@ -3,6 +3,19 @@
 Bienvenue dans **LabPurpleTeam**, votre laboratoire de sécurité ultra-connecté et blindé grâce à **Wazuh** ! Ici, on fait de la surveillance de sécurité comme des pros. 💪
 
 ---
+## Déploiement de l'infrastructure
+
+```bash
+# Initialiser le projet Terraform
+terraform init
+
+# Vérifier le plan d’exécution
+terraform plan
+
+# Appliquer le plan (créer/modifier l’infrastructure)
+terraform apply
+```
+
 
 ## 🛠️ Déploiement de l'architecture Wazuh
 
@@ -11,7 +24,12 @@ Bienvenue dans **LabPurpleTeam**, votre laboratoire de sécurité ultra-connect�
    ```bash
    terraform apply
    ```
+
+/!\ Port Forward pour ansible
+
 2. **Déployer les agents** sur vos machines cibles avec Ansible :
+
+
 
    ```bash
    ansible-playbook -i hosts.ini playbook.yml -vvv --ssh-extra-args="-o StrictHostKeyChecking=no"
@@ -24,7 +42,7 @@ Bienvenue dans **LabPurpleTeam**, votre laboratoire de sécurité ultra-connect�
 Pour vous connecter en SSH à la machine Wazuh, utilisez cette commande qui déchire :
 
 ```bash
-ssh -o "IdentitiesOnly=yes" -o "ProxyCommand=ssh -i mykey -W %h:%p ec2-user@51.44.226.200" -i mykey wazuh-user@10.0.1.50
+ssh -o "IdentitiesOnly=yes" -o "ProxyCommand=ssh -i ~/.ssh/mykey -W %h:%p ec2-user@51.44.226.200" -i ~/.ssh/mykey wazuh-user@10.0.1.50
 ```
 
 ---
@@ -76,9 +94,17 @@ Puis se connecter avec un navigateur au http://localhost:7654/zabbix
 
 ## FAQ
 
-no ping to 8.8.8.8 from private instance after starting the instance ?
-do tfp
+no ping to 8.8.8.8 from private instance OR no ssh after starting the instance ?
+do terraform apply
 
 ## Prérequis
 
-ansible-galaxy collection install community.mysql
+
+Ansible, Terraform
+
+
+
+# TODO
+
+changer hostname machines (donc agent aussi)
+schéma archi 

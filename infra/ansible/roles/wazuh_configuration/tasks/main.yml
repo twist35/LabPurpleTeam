@@ -1,10 +1,75 @@
----
-- name: Establish SSH tunnel to Wazuh dashboard
-  become: yes
-  local_action:
-    module: shell
-    cmd: ssh -L 1234:10.0.1.50:443 -i {{ key_path }} -o "ProxyCommand=ssh -i {{ key_path }} -W %h:%p ec2-user@{{ ec2_public_ip }}" wazuh-user@10.0.1.50
-  async: 0
-  poll: 0
+- name: Déployer le script d'active response
+  copy:
+    dest: /var/ossec/active-response/bin/log_local.sh
+    mode: '0755'
+    content: |
+      #!/bin/bash
+
+      read input
+
+      LEVEL=$(echo "$input" | grep -oP '"level":\s*\K[0-9]+')
+      LOG_FULL=$(echo "$input" | grep -oP '"full_log":\s*"\K([^"]*)')
+
+      echo "$(date) - CRITICAL ALERT LEVEL $LEVEL: $LOG_FULL" >> /var/log/wazuh_alerts_local.log
+      
 
 
+- name: Ajouter l'active response dans ossec.conf
+  blockinfile:
+    path: /var/ossec/etc/ossec.conf
+    marker: "<!-- {mark} ANSIBLE LOGLOCAL -->"
+    insertbefore: "<!-- Log analysis -->"
+    block: |
+        <command>
+        <name>log_local</name>
+        <executable>log_local.sh</executable>
+        <timeout_allowed>no</timeout_allowed>
+        </command>    
+
+- name: Ajouter le bloc <active-response> dans ossec.conf
+  blockinfile:
+    path: /var/ossec/etc/ossec.conf
+    marker: "<!-- {mark} ANSIBLE LOGLOCAL RESPONSE -->"
+    insertafter: "<!-- END ANSIBLE LOGLOCAL -->" 
+    block: |
+          <active-response>
+            <command>log_local</command>
+            <location>local</location>
+            <level>10</level>
+          </active-response>
+
+          <active-response>
+            <command>log_local</command>
+            <location>local</location>
+            <level>9</level>
+          </active-response>
+
+          <active-response>
+            <command>log_local</command>
+            <location>local</location>
+            <level>8</level>
+          </active-response>
+
+          <active-response>
+            <command>log_local</command>
+            <location>local</location>
+            <level>7</level>
+          </active-response>
+
+          <active-response>
+            <command>log_local</command>
+            <location>local</location>
+            <level>6</level>
+          </active-response>
+
+          <active-response>
+            <command>log_local</command>
+            <location>local</location>
+            <level>5</level>
+          </active-response>
+
+- name: Redémarrer le service wazuh-manager
+  systemd:
+    name: wazuh-manager
+    state: restarted
+    enabled: true

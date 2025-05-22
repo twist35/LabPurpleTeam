@@ -3,14 +3,62 @@
   user:
     name: martin
     state: present
-    groups: sudo
+    groups: ""
     shell: /bin/bash
+
+- name: Restreindre les permissions du home de martin
+  file:
+    path: /home/martin
+    state: directory
+    owner: martin
+    group: martin
+    mode: '0755'
 
 - name: Copier le script de backup
   copy:
     src: backup.sh
     dest: /home/martin/backup.sh
     mode: '0755'
+
+- name: Copier le premier flag
+  copy:
+    src: userflag.txt
+    dest: /home/martin/userflag.txt
+    mode: '0755'
+
+- name: Copier le second flag
+  copy:
+    src: rootflag.txt
+    dest: /root/rootflag.txt
+    mode: '0755'
+
+  
+- name: Supprimer martin du groupe sudo s'il y est
+  user:
+    name: martin
+    groups: ""
+    append: no
+    remove: yes
+
+- name: Autoriser martin à exécuter backup.sh sans mot de passe
+  lineinfile:
+    path: /etc/sudoers.d/martin_backup
+    create: yes
+    mode: '0440'
+    owner: root
+    group: root
+    line: 'martin ALL=(ALL) NOPASSWD: /home/martin/backup.sh'
+
+- name: Autoriser martin à conserver PATH et désactiver secure_path
+  copy:
+    dest: /etc/sudoers.d/env_keep_martin
+    content: |
+      Defaults:martin !secure_path
+      Defaults:martin env_keep += "PATH"
+    owner: root
+    group: root
+    mode: '0440'
+
 
 - name: Assurer que le dossier .ssh existe avec les bons droits
   file:
@@ -35,7 +83,7 @@
     user: martin
     key: "{{ ssh_keypair.public_key }}"
 
-- name: Créer dossier /var/notes accessible par www-data mais hors web
+- name: Créer dossier /var/notes
   file:
     path: /var/notes
     state: directory
