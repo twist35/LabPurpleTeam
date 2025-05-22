@@ -198,6 +198,14 @@
   command: a2enmod rewrite
   notify: Restart Apache
 
+- name: Créer le dossier /var/www/blog s'il n'existe pas
+  file:
+    path: /var/www/blog
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+
 - name: Déployer les fichiers du sous-domaine blog
   copy:
     src: "{{ item }}"

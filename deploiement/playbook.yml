@@ -38,6 +38,7 @@
   roles:
     - wazuh_agents
 
+# Pas besoin de déployer car utilisation d'une AMI Zabbix d'AWS
 # - name: Deploy zabbix server
 #   hosts: zabbix_server
 #   become: yes
