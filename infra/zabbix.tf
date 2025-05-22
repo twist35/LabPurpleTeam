@@ -1,11 +1,11 @@
 resource "aws_instance" "zabbix" {
-  ami                         = "ami-007891ae041e0263b" #Debian 12 ARM ami-0639bd0dd196bc480
-  instance_type               = "t3.medium"
-  key_name                    = aws_key_pair.vm_key.key_name
-  subnet_id                   = aws_subnet.private.id
-  private_ip                  = "10.0.1.25" # IP privée statique 
+  ami           = "ami-007891ae041e0263b" #Debian 12 ARM ami-0639bd0dd196bc480
+  instance_type = "t3.medium"
+  key_name      = aws_key_pair.vm_key.key_name
+  subnet_id     = aws_subnet.private.id
+  private_ip    = "10.0.1.25" # IP privée statique 
 
-  vpc_security_group_ids      = [aws_security_group.zabbix_sg.id]
+  vpc_security_group_ids = [aws_security_group.zabbix_sg.id]
 
   tags = {
     Name = "Zabbix"
@@ -16,16 +16,16 @@ resource "aws_security_group" "zabbix_sg" {
   vpc_id = aws_vpc.main.id
 
   ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "TCP"
-    security_groups =  [aws_security_group.nat_sg.id]
+    from_port       = 22
+    to_port         = 22
+    protocol        = "TCP"
+    security_groups = [aws_security_group.nat_sg.id]
   }
   ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "TCP"
-    security_groups =  [aws_security_group.nat_sg.id]
+    from_port       = 80
+    to_port         = 80
+    protocol        = "TCP"
+    security_groups = [aws_security_group.nat_sg.id]
   }
 
   egress {

@@ -1,13 +1,13 @@
 # Terraform - Wazuh All-in-One Deployment
 
 resource "aws_instance" "wazuh_manager" {
-  ami                         = var.wazuh_ami
-  instance_type               = var.wazuh_instance_type
-  key_name                    = aws_key_pair.vm_key.key_name
-  subnet_id                   = aws_subnet.private.id
-  private_ip                  = "10.0.1.50" # IP privée statique 
+  ami           = var.wazuh_ami
+  instance_type = var.wazuh_instance_type
+  key_name      = aws_key_pair.vm_key.key_name
+  subnet_id     = aws_subnet.private.id
+  private_ip    = "10.0.1.50" # IP privée statique 
 
-  vpc_security_group_ids      = [aws_security_group.wazuh_sg.id]
+  vpc_security_group_ids = [aws_security_group.wazuh_sg.id]
 
   tags = {
     Name = "Wazuh-All-in-One"
@@ -18,10 +18,10 @@ resource "aws_security_group" "wazuh_sg" {
   vpc_id = aws_vpc.main.id
 
   ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "TCP"
-    security_groups =  [aws_security_group.nat_sg.id]
+    from_port       = 22
+    to_port         = 22
+    protocol        = "TCP"
+    security_groups = [aws_security_group.nat_sg.id]
   }
 
   ingress {
