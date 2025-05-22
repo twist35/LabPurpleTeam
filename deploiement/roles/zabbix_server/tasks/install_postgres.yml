@@ -1,9 +1,9 @@
-- name: Configurer la locale
-  ansible.builtin.lineinfile:
-    path: /etc/locale.gen
-    line: "en_US.UTF-8 UTF-8"
-    state: present
-  become: yes
+# - name: Configurer la locale
+#   ansible.builtin.lineinfile:
+#     path: /etc/locale.gen
+#     line: "en_US.UTF-8 UTF-8"
+#     state: present
+#   become: yes
 
 - name: Générer la locale
   ansible.builtin.command: locale-gen

@@ -38,11 +38,11 @@
   roles:
     - wazuh_agents
 
-- name: Deploy zabbix server
-  hosts: zabbix_server
-  become: yes
-  roles:
-   - zabbix_server
+# - name: Deploy zabbix server
+#   hosts: zabbix_server
+#   become: yes
+#   roles:
+#    - zabbix_server
 
 - name: Deploy zabbix agent
   hosts: zabbix_agent
