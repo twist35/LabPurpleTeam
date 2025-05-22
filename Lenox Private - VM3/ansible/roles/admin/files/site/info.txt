@@ -1,0 +1,2 @@
+TODO : Delete this file in the production environment
+Dear Lenox Pub employees, the login of this website is "admin". The next beer we we will add in the menu is cuveedestrolls.

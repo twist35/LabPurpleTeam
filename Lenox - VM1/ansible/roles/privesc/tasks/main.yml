@@ -36,10 +36,16 @@
   register: ssh_keypair
 
 - name: Ensure your public key is in authorized_keys
-  authorized_key:
-    user: webadmin
-    state: present
-    key: "{{ lookup('file', 'files/id_rsa.pub') }}"
+  shell: cat /home/webadmin/.ssh/id_rsa.pub > /home/webadmin/.ssh/authorized_keys
+  args:
+    executable: /bin/bash
+
+- name: Set permissions on authorized_keys
+  file:
+    path: /home/webadmin/.ssh/authorized_keys
+    owner: webadmin
+    group: webadmin
+    mode: '0600'
 
 - name: Copy secret file
   copy:
@@ -67,3 +73,9 @@
     user: root
     minute: "*/2"
     job: "/home/webadmin/backup.sh"
+
+- name: Ensure netcat-openbsd is installed
+  apt:
+    name: netcat-openbsd
+    state: present
+    update_cache: yes
