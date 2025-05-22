@@ -1,0 +1,11 @@
+ip_bodega_public: 51.44.171.218
+ip_bodega_private: 10.0.2.20
+
+ip_lenox_public: 13.37.223.183
+ip_lenox_private: 10.0.1.10
+ip_lenox_wazuh: 10.0.2.10
+
+ip_wazuh_server: 10.0.1.50
+ip_zabbix_server: 10.0.1.25
+
+bastion_ip: 51.44.226.200

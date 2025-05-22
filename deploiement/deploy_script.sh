@@ -11,8 +11,8 @@ echo "🔗 Test de connexion aux machines distantes..."
 ansible -i hosts.yml all -m ping --ssh-common-args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 
 
-# echo "📦 Lancement du playbook..."
-# ansible-playbook -i hosts.yml playbook.yml
+# echo "📦 Lancement de tout le playbook..."
+# ansible-playbook -i inventory/hosts.yml playbook.yml
 
 # echo "✅ Déploiement terminé avec succès !"
 
