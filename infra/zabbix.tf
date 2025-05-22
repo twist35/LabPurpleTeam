@@ -13,7 +13,7 @@ resource "aws_instance" "zabbix" {
 }
 
 resource "aws_security_group" "zabbix_sg" {
-  vpc_id = var.vpc_id
+  vpc_id = aws_vpc.main.id
 
   ingress {
     from_port   = 22

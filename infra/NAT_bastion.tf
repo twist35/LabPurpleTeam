@@ -4,7 +4,7 @@
 resource "aws_security_group" "nat_sg" {
   name        = "nat-instance-sg"
   description = "Allow NAT traffic"
-  vpc_id      = var.vpc_id
+  vpc_id      = aws_vpc.main.id
 
   ingress {
     from_port   = 0

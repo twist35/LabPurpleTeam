@@ -21,11 +21,4 @@ variable "wazuh_instance_type" {
 
 
 
-variable "vpc_id" {
-  description = "ID du VPC où le SG sera créé"
-  type        = string
-  default     = "vpc-0e77c51c2fd7516f4"
-}
-
-
 

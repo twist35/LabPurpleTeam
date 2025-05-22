@@ -4,12 +4,6 @@ set -e
 echo "🚀 Lancement de Terraform dans le dossier infra/ ..."
 cd infra/
 
-#!/bin/bash
-set -e
-
-echo "🚀 Lancement de Terraform dans le dossier infra/ ..."
-cd infra/
-
 # 🔍 Init seulement si nécessaire
 if [ ! -d ".terraform" ] || [ ! -f ".terraform.lock.hcl" ]; then
   echo "🛠️  Initialisation de Terraform (init)..."

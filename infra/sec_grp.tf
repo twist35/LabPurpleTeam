@@ -3,7 +3,7 @@ module "vm_sg" {
 
   name        = "VM-sg"
   description = "Security group for SSH+HTTP access on VMs"
-  vpc_id      = var.vpc_id
+  vpc_id      = aws_vpc.main.id
 
   ingress_with_cidr_blocks = [
     {
@@ -46,7 +46,7 @@ module "bodega_sg" {
 
   name        = "bodega_sg"
   description = "Security group for SSH+HTTP access on VMs"
-  vpc_id      = var.vpc_id
+  vpc_id      = aws_vpc.main.id
 
   egress_with_cidr_blocks = [{
     from_port   = 0
@@ -67,7 +67,7 @@ module "lenox_sg" {
 
   name        = "lenox_sg"
   description = "Security group for SSH+HTTP access on VMs"
-  vpc_id      = var.vpc_id
+  vpc_id      = aws_vpc.main.id
 
   ingress_with_cidr_blocks = [
     {
@@ -110,7 +110,7 @@ module "lenox_private_sg" {
 
   name        = "lenox_private_sg"
   description = "Security group for private lenox"
-  vpc_id      = var.vpc_id
+  vpc_id      = aws_vpc.main.id
 
   ingress_with_cidr_blocks = [
     {

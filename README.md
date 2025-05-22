@@ -5,6 +5,7 @@ Bienvenue dans **LabPurpleTeam**, votre laboratoire de sécurité ultra-connect�
 ---
 ## Déploiement de l'infrastructure
 
+
 ```bash
 # Initialiser le projet Terraform
 terraform init
@@ -99,6 +100,8 @@ do terraform apply
 
 ## Prérequis
 
+
+Un compte aws avec un s3/dynamoDB pour le backend et lockfile
 
 Ansible, Terraform
 
