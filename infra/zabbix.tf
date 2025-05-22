@@ -28,13 +28,6 @@ resource "aws_security_group" "zabbix_sg" {
     security_groups =  [aws_security_group.nat_sg.id]
   }
 
-  ingress {
-    from_port   = 10051
-    to_port     = 10051
-    protocol    = "tcp"
-    cidr_blocks = [data.aws_vpc.main.cidr_block]
-  }
-
   egress {
     from_port   = 0
     to_port     = 0
