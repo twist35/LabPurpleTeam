@@ -19,4 +19,4 @@ echo "✅ Résultat final :"
 grep bastion_ip "$GROUP_VARS_FILE"
 
 #echo "📦 Lancement du playbook Ansible ..."
-#ansible-playbook -i ../deploiement/inventory/ playbook.yml
+#ansible-playbook -i deploiement/inventory/ playbook.yml
