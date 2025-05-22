@@ -1,9 +1,0 @@
-- name: Complete deploy
-  hosts: lenox
-  become: yes
-
-  roles:
-    - lenox_users
-    - lenox_web
-    - cockpit
-    - privesc
