@@ -110,4 +110,4 @@ Ansible, Terraform
 # TODO
 
 changer hostname machines (donc agent aussi)
-schéma archi 
+Agent Zabbix
