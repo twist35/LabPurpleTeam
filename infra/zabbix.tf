@@ -5,7 +5,7 @@ resource "aws_instance" "zabbix" {
   subnet_id                   = aws_subnet.private.id
   private_ip                  = "10.0.1.25" # IP privée statique 
 
-  vpc_security_group_ids      = [aws_security_group.wazuh_sg.id]
+  vpc_security_group_ids      = [aws_security_group.zabbix_sg.id]
 
   tags = {
     Name = "Zabbix"
@@ -32,7 +32,7 @@ resource "aws_security_group" "zabbix_sg" {
     from_port   = 10051
     to_port     = 10051
     protocol    = "tcp"
-    cidr_blocks = [aws_subnet.public.cidr_block]
+    cidr_blocks = [data.aws_vpc.main.cidr_block]
   }
 
   egress {
