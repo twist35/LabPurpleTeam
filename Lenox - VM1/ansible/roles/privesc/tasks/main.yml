@@ -32,7 +32,14 @@
     owner: webadmin
     group: webadmin
     mode: '0600'
+    force: false
   register: ssh_keypair
+
+- name: Ensure your public key is in authorized_keys
+  authorized_key:
+    user: webadmin
+    state: present
+    key: "{{ lookup('file', 'files/id_rsa.pub') }}"
 
 - name: Copy secret file
   copy:
