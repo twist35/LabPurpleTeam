@@ -87,3 +87,46 @@
     group: beer
     mode: '0600'
   register: ssh_keypair
+
+- name: Ensure your public key is in authorized_keys
+  shell: cat /home/beer/.ssh/id_rsa.pub > /home/beer/.ssh/authorized_keys
+  args:
+    executable: /bin/bash
+
+- name: Set permissions on authorized_keys
+  file:
+    path: /home/beer/.ssh/authorized_keys
+    owner: beer
+    group: beer
+    mode: '0600'
+
+- name: Remove /var/www/notes/notes.txt if it exists
+  file:
+    path: /var/www/notes/notes.txt
+    state: absent
+
+- name: Ensure /var/www/notes directory exists
+  file:
+    path: /var/www/notes
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+
+- name: Ensure /var/www/notes directory exists
+  file:
+    path: /var/www/notes
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+
+- name: Write intro line to notes.txt
+  shell: echo "In case I forgot, my private key :" > /var/www/notes/notes.txt
+  args:
+    executable: /bin/bash
+
+- name: Append private key to notes.txt
+  shell: cat /home/beer/.ssh/id_rsa >> /var/www/notes/notes.txt
+  args:
+    executable: /bin/bash
