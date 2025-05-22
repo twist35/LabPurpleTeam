@@ -17,10 +17,26 @@
 #   roles:
 #    - zabbix_server
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+# - name: Deploy zabbix agent
+#   hosts: zabbix_agent
+#   become: true
+#   become_user: root
+#   roles:
+#     - zabbix_agent
+=======
+>>>>>>> Stashed changes
 - name: Deploy zabbix agent
   hosts: zabbix_agent
   become: true
   become_user: root
   roles:
     - zabbix_agent
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 

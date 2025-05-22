@@ -1,10 +1,5 @@
----
-zabbix_server_database: "pgsql"
-zabbix_server_dbhost: "localhost"
-zabbix_server_dbname: "zabbix"
-zabbix_server_dbuser: "zabbix"
-zabbix_server_dbpassword: "zabbix"
-zabbix_server_database_long: "PostgreSQL"
-zabbix_server_zabbix_server_package_state: "present"
-zabbix_server_zabbix_server_service_state: "started"
-zabbix_server_zabbix_server_service_enabled: true
+# ---
+# zabbix_server_dbhost: "localhost"
+# zabbix_server_dbname: "zabbix"
+# zabbix_server_dbuser: "zabbix"
+# zabbix_server_dbpassword: "zabbix"

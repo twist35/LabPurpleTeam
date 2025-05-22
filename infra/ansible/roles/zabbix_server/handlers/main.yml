@@ -12,7 +12,7 @@
     name: "{{ zabbix_server_package }}"
     state: restarted
 
-- name: Redémarrer le serveur PostgreSQL
+- name: Restart PostgreSQL
   become: yes
   ansible.builtin.service:
     name: postgresql
@@ -23,3 +23,4 @@
   community.docker.docker_compose:
     project_src: "{{ zabbix_docker_compose_path }}"
     state: restarted
+
