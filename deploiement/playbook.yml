@@ -12,8 +12,8 @@
   hosts: bodega
   become: true
   vars_files:
-    - role_bodega_users/vars/main.yml
-    - role_bodega_web/vars/main.yml
+    - roles/role_bodega_users/vars/main.yml
+    - roles/role_bodega_web/vars/main.yml
 
   roles:
     - role_bodega_users
