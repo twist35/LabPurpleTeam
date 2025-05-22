@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion</title>
+    <link rel="stylesheet" href="styles2.css">
+</head>
+<body>
+    <h1>Connexion</h1>
+
+    <div class="accueil-container">
+        <div id="error-msg" style="color:red; display:none;">
+            Identifiants incorrects. Veuillez réessayer.
+        </div>
+
+        <form method="POST" action="login.php">
+            <label for="username">Nom d'utilisateur :</label><br>
+            <input type="text" name="username" id="username" required><br><br>
+
+            <label for="password">Mot de passe :</label><br>
+            <input type="password" name="password" id="password" required><br><br>
+
+            <button type="submit">Se connecter</button>
+        </form>
+    </div>
+
+    <script>
+        if (window.location.search.includes('error=1')) {
+            document.getElementById('error-msg').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for role_lenox_web
+
+- name: Install Apache & PHP
+  apt:
+    name:
+      - apache2
+      - php
+      - libapache2-mod-php
+    state: present
+    update_cache: yes
+
+- name: Activate Apache mod_php
+  command: a2enmod php8.2
+  ignore_errors: yes
+
+- name: Copy Apache configuration
+  copy:
+    src: lenox.conf
+    dest: /etc/apache2/sites-available/lenox.conf
+
+- name: Activate the website
+  command: a2ensite lenox.conf
+
+- name: Copy website files
+  copy:
+    src: site/
+    dest: /var/www/html
+    mode: '0755'
+    owner: www-data
+    group: www-data
+
+- name: Deactivate default site
+  command: a2dissite 000-default.conf
+  ignore_errors: yes
+
+- name: Delete index.html of Apache
+  file:
+    path: /var/www/html/index.html
+    state: absent
+
+- name: Restart Apache
+  service:
+    name: apache2
+    state: restarted

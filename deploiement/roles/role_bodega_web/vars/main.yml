@@ -1,0 +1,6 @@
+---
+mysql_ansible_user: ansible_admin
+mysql_ansible_password: ansible_pw
+
+mysql_blogetu_user: blogetu_user
+mysql_blogetu_password: blogetu_pw
