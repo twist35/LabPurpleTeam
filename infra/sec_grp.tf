@@ -7,11 +7,11 @@ module "vm_sg" {
 
   ingress_with_cidr_blocks = [
     {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = "0.0.0.0/0"
-    description = "Allow SSH from anywhere"
+      from_port   = 22
+      to_port     = 22
+      protocol    = "tcp"
+      cidr_blocks = "0.0.0.0/0"
+      description = "Allow SSH from anywhere"
     },
     {
       from_port   = 80
@@ -37,7 +37,7 @@ module "vm_sg" {
   }]
 
   tags = {
-    Name        = "VM-SG"
+    Name = "VM-SG"
   }
 }
 
@@ -57,7 +57,7 @@ module "bodega_sg" {
   }]
 
   tags = {
-    Name        = "bodega_sg"
+    Name = "bodega_sg"
   }
 }
 
@@ -101,7 +101,7 @@ module "lenox_sg" {
   }]
 
   tags = {
-    Name        = "lenox_sg"
+    Name = "lenox_sg"
   }
 }
 
@@ -144,7 +144,7 @@ module "lenox_private_sg" {
   }]
 
   tags = {
-    Name        = "lenox_private_sg"
+    Name = "lenox_private_sg"
   }
 }
 

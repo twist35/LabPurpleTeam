@@ -8,9 +8,9 @@ resource "aws_vpc" "main" {
 }
 
 resource "aws_subnet" "private" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.1.0/24"
-   map_public_ip_on_launch = false 
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.1.0/24"
+  map_public_ip_on_launch = false
 
   tags = {
     Name = "Subnet_private"
@@ -62,7 +62,7 @@ resource "aws_route_table" "private" {
 resource "aws_route" "private_nat_instance" {
   route_table_id         = aws_route_table.private.id
   destination_cidr_block = "0.0.0.0/0"
-  network_interface_id = aws_network_interface.nat_eni.id
+  network_interface_id   = aws_network_interface.nat_eni.id
   lifecycle {
     create_before_destroy = true
     ignore_changes        = [network_interface_id]

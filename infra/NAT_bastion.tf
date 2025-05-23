@@ -42,10 +42,10 @@ resource "aws_security_group" "nat_sg" {
 # ENI pour l'instance NAT
 # ------------------------------
 resource "aws_network_interface" "nat_eni" {
-  subnet_id       = aws_subnet.public.id
-  security_groups = [aws_security_group.nat_sg.id]
+  subnet_id         = aws_subnet.public.id
+  security_groups   = [aws_security_group.nat_sg.id]
   source_dest_check = false
-  private_ips = ["10.0.2.100"]
+  private_ips       = ["10.0.2.100"]
 
   tags = {
     Name = "nat-eni"
@@ -56,7 +56,7 @@ resource "aws_network_interface" "nat_eni" {
 # EIP pour l'instance NAT
 # ------------------------------
 resource "aws_eip" "nat_eip" {
-  domain = "vpc" 
+  domain = "vpc"
 }
 
 resource "aws_eip_association" "nat_assoc" {
@@ -68,9 +68,9 @@ resource "aws_eip_association" "nat_assoc" {
 # Instance NAT
 # ------------------------------
 resource "aws_instance" "nat" {
-  ami               = "ami-0137cee1a6fb4f763"  # AMI NAT AWS
-  instance_type     = "t3.nano"  # Utilise la variable pour l'instance_type
-  key_name          = aws_key_pair.vm_key.key_name  # Utilise la variable pour la clé SSH
+  ami           = "ami-0137cee1a6fb4f763"      # AMI NAT AWS
+  instance_type = "t3.nano"                    # Utilise la variable pour l'instance_type
+  key_name      = aws_key_pair.vm_key.key_name # Utilise la variable pour la clé SSH
 
   network_interface {
     device_index         = 0

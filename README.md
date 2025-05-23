@@ -1,46 +1,39 @@
-# 🚀 LabPurpleTeam - Sécurité de Ouf !
+# 🚀 LabPurpleTeam 
 
-Bienvenue dans **LabPurpleTeam**, votre laboratoire de sécurité ultra-connecté et blindé grâce à **Wazuh** ! Ici, on fait de la surveillance de sécurité comme des pros. 💪
+Notre projet consiste à concevoir un lab Purple Team dont le déploiement est 100% automatisé avec l’IaC, en utilisant Terraform pour le déploiement et Ansible pour la configuration des machines. Ce lab comprend deux environnements vulnérables destinés aux attaques (Red Team), et plusieurs machines défensives (Blue Team) pour mettre en place des outils de monitoring, de détection et de réponse.
+
+Le projet a été réalisé en 2 semaines, par deux groupes de deux étudiants, chacun apportant ses compétences offensives ou défensives. 
+
+L’objectif : simuler des scénarios d’attaque réalistes, observer les réactions des systèmes face à ces attaques.
+
+## Informations
+
+Ce projet est configuré par défaut pour se lancer sur la région Paris (eu-west-3) d'AWS.
+Il est possible de déployer sur la région Dublin (eu-west-1) sur la branche "eu-west-1"
+
+## Prérequis
+
+- compte aws avec un S3 pour le dynamoDB et un DynamoDB pour lockfile (à configurer dans infra/backend.tf)
+- Ansible
+- Terraform 
 
 ---
 ## Déploiement de l'infrastructure
 
+Pour déployer toute l'infrastructure, il s'agit d'éxécuter :
 
 ```bash
-# Initialiser le projet Terraform
-terraform init
-
-# Vérifier le plan d’exécution
-terraform plan
-
-# Appliquer le plan (créer/modifier l’infrastructure)
-terraform apply
+./launch.sh
 ```
+
+Ce script déploi le terraform et l'ansible à la suite.
 
 
 ## 🛠️ Déploiement de l'architecture Wazuh
 
-1. **Lancer Terraform** pour créer l'architecture de dingue Wazuh :
+### 🔑 Connexion SSH 
 
-   ```bash
-   terraform apply
-   ```
-
-/!\ Port Forward pour ansible
-
-2. **Déployer les agents** sur vos machines cibles avec Ansible :
-
-
-
-   ```bash
-   ansible-playbook -i hosts.ini playbook.yml -vvv --ssh-extra-args="-o StrictHostKeyChecking=no"
-   ```
-
----
-
-## 🔑 Connexion SSH de Fou
-
-Pour vous connecter en SSH à la machine Wazuh, utilisez cette commande qui déchire :
+Pour vous connecter en SSH à la machine Wazuh, utilisez cette commande :
 
 ```bash
 ssh -o "IdentitiesOnly=yes" -o "ProxyCommand=ssh -i ~/.ssh/mykey -W %h:%p ec2-user@51.44.226.200" -i ~/.ssh/mykey wazuh-user@10.0.1.50
@@ -48,9 +41,9 @@ ssh -o "IdentitiesOnly=yes" -o "ProxyCommand=ssh -i ~/.ssh/mykey -W %h:%p ec2-us
 
 ---
 
-## 🌐 Accès au Dashboard Wazuh
+### 🌐 Accès au Dashboard Wazuh
 
-Pour accéder à l’interface de gestion super stylée de Wazuh, utilisez ce tunnel SSH ultra sécurisé :
+Pour accéder à l’interface de gestion de Wazuh, utilisez ce tunnel SSH sécurisé :
 
 ```bash
 sudo ssh -L 1234:10.0.1.50:443 -i ~/.ssh/mykey -o "ProxyCommand=ssh -i ~/.ssh/mykey -W %h:%p ec2-user@51.44.226.200" wazuh-user@10.0.1.50
@@ -58,56 +51,31 @@ sudo ssh -L 1234:10.0.1.50:443 -i ~/.ssh/mykey -o "ProxyCommand=ssh -i ~/.ssh/my
 
 Ensuite, ouvrez votre navigateur sur :
 
-```
 https://localhost:1234
-```
 
-### Identifiants
+
+**Identifiants**
 
 Username : admin
 Password : <Instance Id> (avec le I en majuscule) Exemple : I-00ba406a1c625db3c
 
 ---
 
-
-
-## 🎉 Enjoy!
-
-Et voilà ! Vous êtes prêt à dompter la cybersécurité avec Wazuh ! Si vous avez des questions, n'hésitez pas à nous contacter. Let's make security epic! 🔥
-
-*Martin t'es grave beau*
-
-
 ## Déploiement de l'infra Zabbix
 
-```bash
-ssh -o "IdentitiesOnly=yes" -o "ProxyCommand=ssh -i ~/.ssh/mykey -W %h:%p ec2-user@51.44.226.200" -i ~/.ssh/mykey admin@10.0.1.25
-```
+Pour vous connecter en SSH à la machine Zabbix, utilisez cette commande :
 
+
+```bash
+ssh -o "IdentitiesOnly=yes" -o "ProxyCommand=ssh -i ~/.ssh/mykey -W %h:%p ec2-user@51.44.226.200" -i ~/.ssh/mykey rocky@10.0.1.25
+```
 
 ## Accès Dashboard Zabbix
 
+Pour accéder à l’interface de gestion de Zabbix, utilisez ce tunnel SSH sécurisé :
+
 ```bash
-sudo ssh -L 7654:10.0.1.25:80 -i ~/.ssh/mykey -o "ProxyCommand=ssh -i ~/.ssh/mykey -W %h:%p ec2-user@51.44.226.200" admin@10.0.1.25
+sudo ssh -L 7654:10.0.1.25:80 -i ~/.ssh/mykey -o "ProxyCommand=ssh -i ~/.ssh/mykey -W %h:%p ec2-user@51.44.226.200" rocky@10.0.1.25
 ```
 
 Puis se connecter avec un navigateur au http://localhost:7654/zabbix
-
-## FAQ
-
-no ping to 8.8.8.8 from private instance OR no ssh after starting the instance ?
-do terraform apply
-
-## Prérequis
-
-
-Un compte aws avec un s3/dynamoDB pour le backend et lockfile
-
-Ansible, Terraform
-
-
-
-# TODO
-
-changer hostname machines (donc agent aussi)
-schéma archi 
