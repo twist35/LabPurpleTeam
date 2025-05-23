@@ -12,13 +12,13 @@
     state: directory
     owner: martin
     group: martin
-    mode: '0755'
+    mode: '0750'
 
 - name: Copier le script de backup
   copy:
     src: backup.sh
     dest: /home/martin/backup.sh
-    mode: '0755'
+    mode: '0750'
 
 - name: Copier le premier flag
   copy:
