@@ -63,7 +63,7 @@ Pour vous connecter en SSH à la machine Zabbix, utilisez cette commande :
 
 
 ```bash
-ssh -o "IdentitiesOnly=yes" -o "ProxyCommand=ssh -i ~/.ssh/mykey -W %h:%p ec2-user@51.44.226.200" -i ~/.ssh/mykey admin@10.0.1.25
+ssh -o "IdentitiesOnly=yes" -o "ProxyCommand=ssh -i ~/.ssh/mykey -W %h:%p ec2-user@51.44.226.200" -i ~/.ssh/mykey rocky@10.0.1.25
 ```
 
 ## Accès Dashboard Zabbix
@@ -71,7 +71,7 @@ ssh -o "IdentitiesOnly=yes" -o "ProxyCommand=ssh -i ~/.ssh/mykey -W %h:%p ec2-us
 Pour accéder à l’interface de gestion de Zabbix, utilisez ce tunnel SSH sécurisé :
 
 ```bash
-sudo ssh -L 7654:10.0.1.25:80 -i ~/.ssh/mykey -o "ProxyCommand=ssh -i ~/.ssh/mykey -W %h:%p ec2-user@51.44.226.200" admin@10.0.1.25
+sudo ssh -L 7654:10.0.1.25:80 -i ~/.ssh/mykey -o "ProxyCommand=ssh -i ~/.ssh/mykey -W %h:%p ec2-user@51.44.226.200" rocky@10.0.1.25
 ```
 
 Puis se connecter avec un navigateur au http://localhost:7654/zabbix
