@@ -1,4 +1,4 @@
-# 🚀 LabPurpleTeam - Sécurité de Ouf !
+# 🚀 LabPurpleTeam 
 
 Notre projet consiste à concevoir un lab Purple Team dont le déploiement est 100% automatisé avec l’IaC, en utilisant Terraform pour le déploiement et Ansible pour la configuration des machines. Ce lab comprend deux environnements vulnérables destinés aux attaques (Red Team), et plusieurs machines défensives (Blue Team) pour mettre en place des outils de monitoring, de détection et de réponse.
 
