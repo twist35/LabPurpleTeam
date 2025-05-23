@@ -1,8 +1,10 @@
 # 🚀 LabPurpleTeam - Sécurité de Ouf !
 
-## Description
+Notre projet consiste à concevoir un lab Purple Team dont le déploiement est 100% automatisé avec l’IaC, en utilisant Terraform pour le déploiement et Ansible pour la configuration des machines. Ce lab comprend deux environnements vulnérables destinés aux attaques (Red Team), et plusieurs machines défensives (Blue Team) pour mettre en place des outils de monitoring, de détection et de réponse.
 
+Le projet a été réalisé en 2 semaines, par deux groupes de deux étudiants, chacun apportant ses compétences offensives ou défensives. L’objectif : simuler des scénarios d’attaque réalistes, observer les réactions des systèmes face à ces attaques.
 
+## Informations
 
 Ce projet est configuré par défaut pour se lancer sur la région Paris (eu-west-3) d'AWS.
 Il est possible de déployer sur la région Dublin (eu-west-1) sur la branche "eu-west-1"
