@@ -20,6 +20,9 @@ Il est possible de déployer sur la région Dublin (eu-west-1) sur la branche "e
 ---
 ## Déploiement de l'infrastructure
 
+![Alt text](diagramme.drawio.png?raw=true "Schéma d'infrastructure du projet")
+
+
 Pour déployer toute l'infrastructure, il s'agit d'éxécuter :
 
 ```bash
